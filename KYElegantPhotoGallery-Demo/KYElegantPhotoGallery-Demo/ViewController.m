@@ -6,18 +6,46 @@
 //  Copyright (c) 2015 Kitten Yang. All rights reserved.
 //
 
+#define IMAGE_SIZE  60
+
 #import "ViewController.h"
+#import "KYPhotoGallery.h"
 
 @interface ViewController ()
 
 @end
 
-@implementation ViewController
+@implementation ViewController{
+    UIImageView *testImageView;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    actionButton.backgroundColor = [UIColor clearColor];
+    [actionButton setTitle:@"Present" forState:UIControlStateNormal];
+    actionButton.center = self.view.center;
+    actionButton.bounds = CGRectMake(0, 0, 100, 30);
+    [actionButton addTarget:self action:@selector(buttonTaped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:actionButton];
+    
+    
+    testImageView = [[UIImageView alloc]initWithFrame:CGRectZero];
+    testImageView.center = CGPointMake(actionButton.center.x, actionButton.center.y + IMAGE_SIZE);
+    testImageView.bounds = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+    testImageView.image  = [UIImage imageNamed:@"l1.jpg"];
+    [self.view addSubview:testImageView];
 }
+
+
+#pragma mark -- Tapped
+- (void)buttonTaped:(UIButton *)button{
+    KYPhotoGallery *photoGallery = [KYPhotoGallery new];
+    photoGallery.fromImageView = testImageView;
+    [self presentViewController:photoGallery animated:NO completion:nil];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

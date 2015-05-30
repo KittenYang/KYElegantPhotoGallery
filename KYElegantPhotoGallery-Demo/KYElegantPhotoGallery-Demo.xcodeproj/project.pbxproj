@@ -14,6 +14,7 @@
 		5F504A0A1B1A1DDE005E90B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F504A091B1A1DDE005E90B8 /* Images.xcassets */; };
 		5F504A0D1B1A1DDE005E90B8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F504A0B1B1A1DDE005E90B8 /* LaunchScreen.xib */; };
 		5F504A191B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A181B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m */; };
+		5F504A241B1A1F26005E90B8 /* KYPhotoGallery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		5F504A121B1A1DDE005E90B8 /* KYElegantPhotoGallery-DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KYElegantPhotoGallery-DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F504A171B1A1DDE005E90B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F504A181B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYElegantPhotoGallery_DemoTests.m; sourceTree = "<group>"; };
+		5F504A221B1A1F26005E90B8 /* KYPhotoGallery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYPhotoGallery.h; path = Classes/KYPhotoGallery.h; sourceTree = SOURCE_ROOT; };
+		5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYPhotoGallery.m; path = Classes/KYPhotoGallery.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,7 @@
 		5F5049FB1B1A1DDE005E90B8 /* KYElegantPhotoGallery-Demo */ = {
 			isa = PBXGroup;
 			children = (
+				5F504A251B1A1F35005E90B8 /* Classes */,
 				5F504A001B1A1DDE005E90B8 /* AppDelegate.h */,
 				5F504A011B1A1DDE005E90B8 /* AppDelegate.m */,
 				5F504A031B1A1DDE005E90B8 /* ViewController.h */,
@@ -117,6 +121,15 @@
 				5F504A171B1A1DDE005E90B8 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5F504A251B1A1F35005E90B8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				5F504A221B1A1F26005E90B8 /* KYPhotoGallery.h */,
+				5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F504A051B1A1DDE005E90B8 /* ViewController.m in Sources */,
+				5F504A241B1A1F26005E90B8 /* KYPhotoGallery.m in Sources */,
 				5F504A021B1A1DDE005E90B8 /* AppDelegate.m in Sources */,
 				5F5049FF1B1A1DDE005E90B8 /* main.m in Sources */,
 			);
@@ -350,6 +364,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "KYElegantPhotoGallery-Demo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -360,6 +375,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "KYElegantPhotoGallery-Demo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
