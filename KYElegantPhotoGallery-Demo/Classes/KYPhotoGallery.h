@@ -10,6 +10,12 @@
 
 @interface KYPhotoGallery : UIViewController
 
-@property(nonatomic,strong)UIImageView *fromImageView;
+-(id)initWithTappedImageView:(UIImageView *)tappedImageView;
+
+@property(nonatomic,strong)NSMutableArray *imageViewArray;
+@property(nonatomic,assign)NSInteger initialPageIndex;
+
+
+-(void)dismissPhotoGalleryAnimated:(BOOL)animated;
 
 @end

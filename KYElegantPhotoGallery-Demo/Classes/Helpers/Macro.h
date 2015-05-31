@@ -13,6 +13,11 @@
 #endif
 
 
+#define SCREENWIDTH     [UIScreen mainScreen].bounds.size.width
+#define SCREENHEIGHT    [UIScreen mainScreen].bounds.size.height
+#define PHOTOS_SPACING  20
+#define ANIMATEDURATION 0.5
+#define ANIMATEDAMPING  0.7
 
 //
 // System Versioning Preprocessor Macros

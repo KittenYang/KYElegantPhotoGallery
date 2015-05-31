@@ -7,18 +7,20 @@
 //
 
 
-#define SCREENWIDTH  [UIScreen mainScreen].bounds.size.width
-#define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
-
 
 #import "KYPhotoGallery.h"
 #import "UIImage+Blur.h"
 #import "Macro.h"
+#import "PhotoGalleryScrollView.h"
 
-@interface KYPhotoGallery ()
+@interface KYPhotoGallery ()<UIScrollViewDelegate>
 
+@property(nonatomic,strong)UIImageView *fromImageView;
 @property(nonatomic,strong)UIView *fadeView;
-@property(nonatomic,strong)UIImageView *initialImageView;
+@property(nonatomic,strong)UIImageView *blurView;
+@property(nonatomic,strong)PhotoGalleryScrollView *photosGalleryScroll;
+@property(nonatomic,strong)UIImageView *animatedImageView;
+@property(nonatomic,assign)CGRect initialImageViewFrame;
 @property(nonatomic,assign)CGRect finalImageViewFrame;
 
 @end
@@ -32,11 +34,12 @@
     int _previousModalPresentationStyle;
 }
 
--(id)init{
+-(id)initWithTappedImageView:(UIImageView *)tappedImageView{
     self = [super init];
     if (self) {
         
-        fromVCSnapShot = [self screenshot];
+        self.fromImageView = tappedImageView;
+        self.fromImageView.hidden = YES;
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
             self.modalPresentationStyle = UIModalPresentationCustom;
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -49,62 +52,65 @@
         }
         
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    //initial
+    fromVCSnapShot = [self screenshot];
+    self.view.backgroundColor = [UIColor clearColor];
+//    float scaleFactor = self.fromImageView.image.size.width / SCREENWIDTH;
+    
+    self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
+    
+//    self.finalImageViewFrame = CGRectMake(0, (SCREENHEIGHT/2)-((self.fromImageView.image.size.height / scaleFactor)/2), SCREENWIDTH, self.fromImageView.image.size.height / scaleFactor);
+    self.finalImageViewFrame = self.view.frame;
+    
+//模糊图层
+    self.blurView = [[UIImageView alloc]initWithImage:[UIImage blurImage:fromVCSnapShot WithRadius:0.3]];
+    self.blurView.frame = self.view.frame;
+    [self.view addSubview:self.blurView];
     
     
-    //模糊图层
-    
-    UIImageView *blurView = [[UIImageView alloc]initWithImage:[UIImage blurImage:fromVCSnapShot WithRadius:0.5]];
-    blurView.frame = self.view.frame;
-    [self.view addSubview:blurView];
-    
-    
-    //黑色背景图层
+//黑色背景图层
     _fadeView = [[UIView alloc]initWithFrame:self.view.frame];
     _fadeView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_fadeView];
-
-
-    //退出按钮
-    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    actionButton.backgroundColor = [UIColor redColor];
-    [actionButton setTitle:@"Dismiss" forState:UIControlStateNormal];
-    actionButton.center = self.view.center;
-    actionButton.bounds = CGRectMake(0, 0, 100, 30);
-    [actionButton addTarget:self action:@selector(buttonTaped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:actionButton];
-    
-    //初始位置的imageView
-    self.initialImageView = [[UIImageView alloc]initWithImage:self.fromImageView.image];
-    self.initialImageView.frame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
-    self.initialImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view addSubview:self.initialImageView];
-    
-    float scaleFactor = self.fromImageView.image.size.width / SCREENWIDTH;
-    self.finalImageViewFrame = CGRectMake(0, (SCREENHEIGHT/2)-((self.fromImageView.image.size.height / scaleFactor)/2), SCREENWIDTH, self.fromImageView.image.size.height / scaleFactor);
     
 
-
+//图片滚动视图
+    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray imageLocation:self.finalImageViewFrame initialPageIndex:self.initialPageIndex];
+    _photosGalleryScroll.delegate = self;
+    _photosGalleryScroll.photoGallery = self;
+    [self.view addSubview:_photosGalleryScroll];
+    
+    
+//动画视图
+    self.animatedImageView = [[UIImageView alloc]initWithImage:self.fromImageView.image];
+    self.animatedImageView.frame = self.initialImageViewFrame;
+    self.animatedImageView.clipsToBounds = YES;
+    self.animatedImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view insertSubview:self.animatedImageView belowSubview:self.photosGalleryScroll];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
 
     [super viewDidAppear:animated];
-    [UIView animateWithDuration:0.3 animations:^{
-        _fadeView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
-        self.initialImageView.frame = self.finalImageViewFrame;
-    } completion:nil];
-    
-}
+    [UIView animateWithDuration:ANIMATEDURATION delay:0.0 usingSpringWithDamping:ANIMATEDAMPING initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        
+        _fadeView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+        self.animatedImageView.frame = self.finalImageViewFrame;
+        
+    } completion:^(BOOL finished) {
 
-- (void)buttonTaped:(UIButton *)button{
-    [self dismissPhotoGalleryAnimated:YES];
+        self.photosGalleryScroll.hidden = NO;
+        self.animatedImageView.hidden   = YES;
+    }];
+    
 }
 
 
@@ -116,16 +122,50 @@
 #pragma dismiss
 -(void)dismissPhotoGalleryAnimated:(BOOL)animated{
     
-    self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self dismissViewControllerAnimated:animated completion:^{
-        
-        if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-        {
-            _applicationTopViewController.modalPresentationStyle = _previousModalPresentationStyle;
+    for (UIImageView *igv in self.imageViewArray) {
+        if (![igv isEqual:self.fromImageView]) {
+            igv.hidden = NO;
         }
+    }
+
+    self.animatedImageView.hidden   = NO;
+    self.photosGalleryScroll.hidden = YES;
+    self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [UIView animateWithDuration:ANIMATEDURATION delay:0.0f usingSpringWithDamping:ANIMATEDAMPING initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.blurView.alpha = 0.0f;
+        self.fadeView.alpha = 0.0f;
+        self.animatedImageView.frame = self.initialImageViewFrame;
+//        self.animatedImageView.contentMode = UIViewContentModeScaleAspectFill;
+        
+    } completion:^(BOOL finished) {
+        
+        self.animatedImageView.hidden = YES;
+        self.fromImageView.hidden = NO;
+        [self dismissViewControllerAnimated:animated completion:^{
+            
+            if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
+                _applicationTopViewController.modalPresentationStyle = _previousModalPresentationStyle;
+            }
+        }];
     }];
 
 }
+
+
+
+#pragma UIScrollViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
+    NSInteger currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width;
+    self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
+    self.fromImageView.hidden = YES;
+    self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
+    self.animatedImageView.image = self.fromImageView.image;
+    
+}
+
+
+
 
 #pragma Helper
 - (UIViewController *)topviewController
@@ -138,7 +178,6 @@
     
     return topviewController;
 }
-
 
 //Snapshot
 - (UIImage *)screenshot
