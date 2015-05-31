@@ -33,15 +33,18 @@
     
     testImageView = [[UIImageView alloc]initWithFrame:CGRectZero];
     testImageView.center = CGPointMake(actionButton.center.x, actionButton.center.y + IMAGE_SIZE);
+    testImageView.clipsToBounds = YES;
     testImageView.bounds = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
-    testImageView.image  = [UIImage imageNamed:@"l1.jpg"];
+    testImageView.image  = [UIImage imageNamed:@"bkgImg.jpg"];
+    testImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:testImageView];
 }
 
 
 #pragma mark -- Tapped
 - (void)buttonTaped:(UIButton *)button{
-    KYPhotoGallery *photoGallery = [KYPhotoGallery new];
+
+    KYPhotoGallery *photoGallery = [[KYPhotoGallery alloc]init];
     photoGallery.fromImageView = testImageView;
     [self presentViewController:photoGallery animated:NO completion:nil];
 }

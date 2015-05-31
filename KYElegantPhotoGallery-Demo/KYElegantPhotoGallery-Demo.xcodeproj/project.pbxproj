@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F03000A1B1ACD4C001E78D2 /* UIImage+Blur.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0300091B1ACD4C001E78D2 /* UIImage+Blur.m */; };
 		5F5049FF1B1A1DDE005E90B8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F5049FE1B1A1DDE005E90B8 /* main.m */; };
 		5F504A021B1A1DDE005E90B8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A011B1A1DDE005E90B8 /* AppDelegate.m */; };
 		5F504A051B1A1DDE005E90B8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A041B1A1DDE005E90B8 /* ViewController.m */; };
@@ -28,6 +29,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5F0300061B1AC8B5001E78D2 /* Macro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Macro.h; path = Classes/Macro.h; sourceTree = SOURCE_ROOT; };
+		5F0300081B1ACD4C001E78D2 /* UIImage+Blur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Blur.h"; path = "Classes/Helpers/UIImage+Blur.h"; sourceTree = SOURCE_ROOT; };
+		5F0300091B1ACD4C001E78D2 /* UIImage+Blur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Blur.m"; path = "Classes/Helpers/UIImage+Blur.m"; sourceTree = SOURCE_ROOT; };
+		5F03000B1B1AD394001E78D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5F5049F91B1A1DDE005E90B8 /* KYElegantPhotoGallery-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KYElegantPhotoGallery-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F5049FD1B1A1DDE005E90B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F5049FE1B1A1DDE005E90B8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -63,9 +68,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F0300071B1ACD09001E78D2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				5F0300061B1AC8B5001E78D2 /* Macro.h */,
+				5F0300081B1ACD4C001E78D2 /* UIImage+Blur.h */,
+				5F0300091B1ACD4C001E78D2 /* UIImage+Blur.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		5F5049F01B1A1DDD005E90B8 = {
 			isa = PBXGroup;
 			children = (
+				5F03000B1B1AD394001E78D2 /* QuartzCore.framework */,
 				5F5049FB1B1A1DDE005E90B8 /* KYElegantPhotoGallery-Demo */,
 				5F504A151B1A1DDE005E90B8 /* KYElegantPhotoGallery-DemoTests */,
 				5F5049FA1B1A1DDE005E90B8 /* Products */,
@@ -128,6 +144,7 @@
 			children = (
 				5F504A221B1A1F26005E90B8 /* KYPhotoGallery.h */,
 				5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */,
+				5F0300071B1ACD09001E78D2 /* Helpers */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -236,6 +253,7 @@
 				5F504A241B1A1F26005E90B8 /* KYPhotoGallery.m in Sources */,
 				5F504A021B1A1DDE005E90B8 /* AppDelegate.m in Sources */,
 				5F5049FF1B1A1DDE005E90B8 /* main.m in Sources */,
+				5F03000A1B1ACD4C001E78D2 /* UIImage+Blur.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +452,7 @@
 				5F504A1E1B1A1DDE005E90B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5F504A1F1B1A1DDE005E90B8 /* Build configuration list for PBXNativeTarget "KYElegantPhotoGallery-DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -442,6 +461,7 @@
 				5F504A211B1A1DDE005E90B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
