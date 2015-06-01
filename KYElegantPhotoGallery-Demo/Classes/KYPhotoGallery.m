@@ -9,20 +9,18 @@
 
 
 #import "KYPhotoGallery.h"
-#import "UIImage+Blur.h"
+#import "UIImage+ImageEffects.h"
 #import "Macro.h"
 #import "PhotoGalleryScrollView.h"
 
 @interface KYPhotoGallery ()<UIScrollViewDelegate>
 
 @property(nonatomic,strong)UIImageView *fromImageView;
-@property(nonatomic,strong)UIView *fadeView;
 @property(nonatomic,strong)UIImageView *blurView;
 @property(nonatomic,strong)PhotoGalleryScrollView *photosGalleryScroll;
 @property(nonatomic,strong)UIImageView *animatedImageView;
 @property(nonatomic,assign)CGRect initialImageViewFrame;
 @property(nonatomic,assign)CGRect finalImageViewFrame;
-@property(nonatomic,strong)UIDynamicAnimator *animator;
 
 @end
 
@@ -40,7 +38,6 @@
     if (self) {
         
         self.fromImageView = tappedImageView;
-        self.fromImageView.hidden = YES;
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
             self.modalPresentationStyle = UIModalPresentationCustom;
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -62,44 +59,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //initial
-    fromVCSnapShot = [self screenshot];
-    self.view.backgroundColor = [UIColor clearColor];
-    float scaleFactor = self.fromImageView.image.size.width / SCREENWIDTH;
-    
-    self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
-    
-    self.finalImageViewFrame = CGRectMake(0, (SCREENHEIGHT/2)-((self.fromImageView.image.size.height / scaleFactor)/2), SCREENWIDTH, self.fromImageView.image.size.height / scaleFactor);
-//    self.finalImageViewFrame = self.view.frame;
-    
-//模糊图层
-    self.blurView = [[UIImageView alloc]initWithImage:[UIImage blurImage:fromVCSnapShot WithRadius:0.3]];
-    self.blurView.frame = self.view.frame;
-    [self.view addSubview:self.blurView];
-    
-    
-//黑色背景图层
-    _fadeView = [[UIView alloc]initWithFrame:self.view.frame];
-    _fadeView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:_fadeView];
-    
-
-//图片滚动视图
-    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray initialPageIndex:self.initialPageIndex];
-//    _photosGalleryScroll.delegate = self;
-    _photosGalleryScroll.photoGallery = self;
-    [self.view addSubview:_photosGalleryScroll];
-    
-    
-//动画视图
-    self.animatedImageView = [[UIImageView alloc]initWithImage:self.fromImageView.image];
-    self.animatedImageView.frame = self.initialImageViewFrame;
-    self.animatedImageView.clipsToBounds = YES;
-    self.animatedImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view insertSubview:self.animatedImageView belowSubview:self.photosGalleryScroll];
-    
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGestureRecognized:)];
-    [self.view addGestureRecognizer:pan];
 
     
 }
@@ -108,9 +67,47 @@
 - (void)viewDidAppear:(BOOL)animated{
 
     [super viewDidAppear:animated];
+    
+    //initial
+    self.fromImageView.hidden = YES;
+    fromVCSnapShot = [self screenshot];
+    self.view.backgroundColor = [UIColor clearColor];
+    float scaleFactor = self.fromImageView.image.size.width / SCREENWIDTH;
+    
+    self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
+    
+    self.finalImageViewFrame = CGRectMake(0, (SCREENHEIGHT/2)-((self.fromImageView.image.size.height / scaleFactor)/2), SCREENWIDTH, self.fromImageView.image.size.height / scaleFactor);
+    
+    
+    //模糊图层
+    self.blurView = [[UIImageView alloc]initWithImage:[fromVCSnapShot applyDarkEffect]];
+    self.blurView.frame = self.view.frame;
+    self.blurView.alpha = 0.0f;
+    [self.view addSubview:self.blurView];
+    
+
+    
+    //图片滚动视图
+    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray initialPageIndex:self.initialPageIndex];
+    _photosGalleryScroll.photoGallery = self;
+    [self.view addSubview:_photosGalleryScroll];
+    
+    
+    //动画视图
+    self.animatedImageView = [[UIImageView alloc]initWithImage:self.fromImageView.image];
+    self.animatedImageView.frame = self.initialImageViewFrame;
+    self.animatedImageView.clipsToBounds = YES;
+    self.animatedImageView.layer.cornerRadius = 8.0f;
+    self.animatedImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view insertSubview:self.animatedImageView belowSubview:self.photosGalleryScroll];
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGestureRecognized:)];
+    [self.view addGestureRecognizer:pan];
+    
+    
     [UIView animateWithDuration:ANIMATEDURATION delay:0.0 usingSpringWithDamping:ANIMATEDAMPING initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
-        _fadeView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+        self.blurView.alpha = 1.0f;
         self.animatedImageView.frame = self.finalImageViewFrame;
         
     } completion:^(BOOL finished) {
@@ -121,6 +118,7 @@
     
     
     [self.photosGalleryScroll DidEndDeceleratBlock:^(NSInteger currentIndex) {
+        self.fromImageView.hidden = NO;
         self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
         self.fromImageView.hidden = YES;
         self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
@@ -134,6 +132,7 @@
 -(void)panGestureRecognized:(UIPanGestureRecognizer *)pan{
     
     static CGPoint initialPoint;
+    CGFloat factor = 0.0f;
     CGPoint transition = [pan translationInView:self.view];
     PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photosGalleryScroll currentPhoto];
     
@@ -143,25 +142,38 @@
         
     }else if(pan.state == UIGestureRecognizerStateChanged){
         
+        
         currentPhoto.center = CGPointMake(initialPoint.x,initialPoint.y + transition.y);
         self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x, currentPhoto.center.y);
+        factor = ABS(transition.y)<= SCROLLDISTANCE ? MIN(1,ABS(transition.y) / SCROLLDISTANCE) : MAX(0, 1 - MAX(0, (ABS(transition.y) - SCROLLDISTANCE) / SCROLLDISTANCE));
+
+        
+        CATransform3D t = CATransform3DIdentity;
+        t.m34  = 1.0/-1000;
+        t = CATransform3DRotate(t,factor*(M_PI/6), transition.y>0?-1:1, 0, 0);
+
+        t = CATransform3DScale(t,ABS(transition.y)<= SCROLLDISTANCE? 1-factor*0.1 : 0.9, ABS(transition.y)<= SCROLLDISTANCE?1-factor*0.1 : 0.9, 0);
+        
+        currentPhoto.layer.transform = t;
+        
+        self.blurView.alpha = 1 - MIN(0.5,MIN(1,ABS(transition.y) / 250));
+        
+        NSLog(@"factor:%f",factor);
+        
         
     }else if ((pan.state == UIGestureRecognizerStateEnded) || (pan.state ==UIGestureRecognizerStateCancelled)){
         
-        if (ABS(transition.y) > 50) {
+        if (ABS(transition.y) > SCROLLDISTANCE) {
             
             [self dismissPhotoGalleryAnimated:YES];
             
         }else{
             
-            
+            currentPhoto.layer.transform = CATransform3DIdentity;
             [UIView animateWithDuration:ANIMATEDURATION delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 currentPhoto.center = initialPoint;
+                self.blurView.alpha = 1.0f;
             } completion:nil];
-//            UIDynamicAnimator *animator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
-//            UISnapBehavior *snap = [[UISnapBehavior alloc]initWithItem:currentPhoto snapToPoint:initialPoint];
-//            [animator addBehavior:snap];
-//            self.animator = animator;
             
         }
         
@@ -174,24 +186,40 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)dealloc{
+    _fromImageView = nil;
+    _blurView = nil;
+    _photosGalleryScroll = nil;
+    _animatedImageView = nil;
+    _imageViewArray = nil;
+    fromVCSnapShot = nil;
+    _applicationTopViewController = nil;
+
+}
+
+
 
 #pragma dismiss
 -(void)dismissPhotoGalleryAnimated:(BOOL)animated{
     
-    for (UIImageView *igv in self.imageViewArray) {
-        if (![igv isEqual:self.fromImageView]) {
-            igv.hidden = NO;
+    @autoreleasepool {
+        for (UIImageView *igv in self.imageViewArray) {
+            if (![igv isEqual:self.fromImageView]) {
+                igv.hidden = NO;
+            }
         }
     }
 
     self.animatedImageView.hidden   = NO;
+    self.animatedImageView.layer.cornerRadius = 0.0f;
     self.photosGalleryScroll.hidden = YES;
     self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [UIView animateWithDuration:ANIMATEDURATION delay:0.0f usingSpringWithDamping:ANIMATEDAMPING initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.blurView.alpha = 0.0f;
-        self.fadeView.alpha = 0.0f;
         self.animatedImageView.frame = self.initialImageViewFrame;
-//        self.animatedImageView.contentMode = UIViewContentModeScaleAspectFill;
+
+        self.presentingViewController.view.transform = CGAffineTransformIdentity;
+
         
     } completion:^(BOOL finished) {
         

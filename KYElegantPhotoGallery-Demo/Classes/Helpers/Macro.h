@@ -18,11 +18,10 @@
 #define PHOTOS_SPACING  20
 #define ANIMATEDURATION 0.5
 #define ANIMATEDAMPING  0.7
+#define SCROLLDISTANCE  100.0
 
-//
-// System Versioning Preprocessor Macros
-//
 
+// 识别系统版本
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
