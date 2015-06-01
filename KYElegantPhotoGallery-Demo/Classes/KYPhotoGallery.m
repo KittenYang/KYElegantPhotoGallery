@@ -22,6 +22,7 @@
 @property(nonatomic,strong)UIImageView *animatedImageView;
 @property(nonatomic,assign)CGRect initialImageViewFrame;
 @property(nonatomic,assign)CGRect finalImageViewFrame;
+@property(nonatomic,strong)UIDynamicAnimator *animator;
 
 @end
 
@@ -57,6 +58,40 @@
     return self;
 }
 
+-(void)panGestureRecognized:(UIPanGestureRecognizer *)pan{
+    
+    static CGPoint initialPoint;
+    CGPoint transition = [pan translationInView:self.view];
+    PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photosGalleryScroll currentPhoto];
+    
+    if (pan.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"currentIndex:%ld",self.photosGalleryScroll.currentIndex);
+        initialPoint = currentPhoto.center;
+        
+    }else if(pan.state == UIGestureRecognizerStateChanged){
+        
+        currentPhoto.center = CGPointMake(initialPoint.x,initialPoint.y + transition.y);
+        self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x, currentPhoto.center.y);
+        
+    }else if ((pan.state == UIGestureRecognizerStateEnded) || (pan.state ==UIGestureRecognizerStateCancelled)){
+        
+        if (ABS(transition.y) > 50) {
+            
+            [self dismissPhotoGalleryAnimated:YES];
+            
+        }else{
+            
+            UIDynamicAnimator *animator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
+            UISnapBehavior *snap = [[UISnapBehavior alloc]initWithItem:currentPhoto snapToPoint:initialPoint];
+            [animator addBehavior:snap];
+            self.animator = animator;
+            
+        }
+        
+    }
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     //initial
@@ -82,8 +117,8 @@
     
 
 //图片滚动视图
-    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray imageLocation:self.view.frame initialPageIndex:self.initialPageIndex];
-    _photosGalleryScroll.delegate = self;
+    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray initialPageIndex:self.initialPageIndex];
+//    _photosGalleryScroll.delegate = self;
     _photosGalleryScroll.photoGallery = self;
     [self.view addSubview:_photosGalleryScroll];
     
@@ -94,6 +129,10 @@
     self.animatedImageView.clipsToBounds = YES;
     self.animatedImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view insertSubview:self.animatedImageView belowSubview:self.photosGalleryScroll];
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGestureRecognized:)];
+    [self.view addGestureRecognizer:pan];
+
     
 }
 
@@ -109,6 +148,15 @@
 
         self.photosGalleryScroll.hidden = NO;
         self.animatedImageView.hidden   = YES;
+    }];
+    
+    
+    [self.photosGalleryScroll DidEndDeceleratBlock:^(NSInteger currentIndex) {
+        self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
+        self.fromImageView.hidden = YES;
+        self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
+        self.animatedImageView.image = self.fromImageView.image;
+        NSLog(@"currentIndex:%ld",currentIndex);
     }];
     
 }
@@ -154,15 +202,16 @@
 
 
 #pragma UIScrollViewDelegate
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    
-    NSInteger currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width;
-    self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
-    self.fromImageView.hidden = YES;
-    self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
-    self.animatedImageView.image = self.fromImageView.image;
-    
-}
+
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+//    
+//    NSInteger currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width;
+//    self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
+//    self.fromImageView.hidden = YES;
+//    self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
+//    self.animatedImageView.image = self.fromImageView.image;
+//    
+//}
 
 
 

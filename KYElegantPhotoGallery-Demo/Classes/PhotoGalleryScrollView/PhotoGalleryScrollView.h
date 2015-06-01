@@ -12,9 +12,16 @@
 @class KYPhotoGallery;
 @interface PhotoGalleryScrollView : UIScrollView
 
-@property (nonatomic,strong)KYPhotoGallery *photoGallery;
+@property (nonatomic,weak)KYPhotoGallery *photoGallery;
+@property (nonatomic,strong)NSMutableArray *photos;      //ScrollView上的所有照片
 
--(id)initWithFrame:(CGRect)frame imageViews:(NSMutableArray *)imageViewArray imageLocation:(CGRect)imageFrame initialPageIndex:(NSInteger)initialPageIndex;
+
+-(id)initWithFrame:(CGRect)frame imageViews:(NSMutableArray *)imageViewArray initialPageIndex:(NSInteger)initialPageIndex;
+
+-(void)DidEndDeceleratBlock:(void(^)(NSInteger currentIndex))didEndDeceleratBlock;
+
+-(NSInteger)currentIndex; // 当前图片的编号
+-(PhotoGalleryImageView *)currentPhoto;
 
 
 @end
