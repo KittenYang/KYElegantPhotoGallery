@@ -62,12 +62,12 @@
     //initial
     fromVCSnapShot = [self screenshot];
     self.view.backgroundColor = [UIColor clearColor];
-//    float scaleFactor = self.fromImageView.image.size.width / SCREENWIDTH;
+    float scaleFactor = self.fromImageView.image.size.width / SCREENWIDTH;
     
     self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
     
-//    self.finalImageViewFrame = CGRectMake(0, (SCREENHEIGHT/2)-((self.fromImageView.image.size.height / scaleFactor)/2), SCREENWIDTH, self.fromImageView.image.size.height / scaleFactor);
-    self.finalImageViewFrame = self.view.frame;
+    self.finalImageViewFrame = CGRectMake(0, (SCREENHEIGHT/2)-((self.fromImageView.image.size.height / scaleFactor)/2), SCREENWIDTH, self.fromImageView.image.size.height / scaleFactor);
+//    self.finalImageViewFrame = self.view.frame;
     
 //模糊图层
     self.blurView = [[UIImageView alloc]initWithImage:[UIImage blurImage:fromVCSnapShot WithRadius:0.3]];
@@ -82,7 +82,7 @@
     
 
 //图片滚动视图
-    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray imageLocation:self.finalImageViewFrame initialPageIndex:self.initialPageIndex];
+    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray imageLocation:self.view.frame initialPageIndex:self.initialPageIndex];
     _photosGalleryScroll.delegate = self;
     _photosGalleryScroll.photoGallery = self;
     [self.view addSubview:_photosGalleryScroll];
@@ -92,7 +92,7 @@
     self.animatedImageView = [[UIImageView alloc]initWithImage:self.fromImageView.image];
     self.animatedImageView.frame = self.initialImageViewFrame;
     self.animatedImageView.clipsToBounds = YES;
-    self.animatedImageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.animatedImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view insertSubview:self.animatedImageView belowSubview:self.photosGalleryScroll];
     
 }
