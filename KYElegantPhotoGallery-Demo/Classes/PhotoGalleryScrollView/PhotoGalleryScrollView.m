@@ -19,18 +19,20 @@
 
 @implementation PhotoGalleryScrollView{
     NSInteger currentIndex;
+    BOOL isFirst;
 }
 
 -(id)initWithFrame:(CGRect)frame imageViews:(NSMutableArray *)imageViewArray initialPageIndex:(NSInteger)initialPageIndex{
     self =  [super initWithFrame:frame];
     if (self) {
+        currentIndex = initialPageIndex;
+        isFirst = YES;
         self.hidden = YES;
         self.pagingEnabled = YES;
         self.delegate = self;
         self.backgroundColor = [UIColor clearColor];
         [self setUp:imageViewArray frame:frame];
         [self setContentOffset:CGPointMake((initialPageIndex-1)*frame.size.width, 0)];
-        currentIndex = initialPageIndex;
     }
     
     return self;
@@ -72,13 +74,24 @@
     
 }
 
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-
-    currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width + 1;
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
-    self.DidEndDeceleratBlock(currentIndex-1);
+    if (isFirst) {
+        isFirst = NO;
+    }else{
+        currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width + 1;
+        currentIndex = MAX(1, currentIndex);
+        self.DidEndDeceleratBlock(currentIndex-1);
+    }
+    
 }
+
+//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+//
+//    currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width + 1;
+//    
+//    self.DidEndDeceleratBlock(currentIndex-1);
+//}
 
 
 #pragma DetectingImageViewDelegate

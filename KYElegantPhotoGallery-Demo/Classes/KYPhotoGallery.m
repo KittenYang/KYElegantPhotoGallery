@@ -58,39 +58,7 @@
     return self;
 }
 
--(void)panGestureRecognized:(UIPanGestureRecognizer *)pan{
-    
-    static CGPoint initialPoint;
-    CGPoint transition = [pan translationInView:self.view];
-    PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photosGalleryScroll currentPhoto];
-    
-    if (pan.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"currentIndex:%ld",self.photosGalleryScroll.currentIndex);
-        initialPoint = currentPhoto.center;
-        
-    }else if(pan.state == UIGestureRecognizerStateChanged){
-        
-        currentPhoto.center = CGPointMake(initialPoint.x,initialPoint.y + transition.y);
-        self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x, currentPhoto.center.y);
-        
-    }else if ((pan.state == UIGestureRecognizerStateEnded) || (pan.state ==UIGestureRecognizerStateCancelled)){
-        
-        if (ABS(transition.y) > 50) {
-            
-            [self dismissPhotoGalleryAnimated:YES];
-            
-        }else{
-            
-            UIDynamicAnimator *animator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
-            UISnapBehavior *snap = [[UISnapBehavior alloc]initWithItem:currentPhoto snapToPoint:initialPoint];
-            [animator addBehavior:snap];
-            self.animator = animator;
-            
-        }
-        
-    }
-    
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -136,6 +104,7 @@
     
 }
 
+
 - (void)viewDidAppear:(BOOL)animated{
 
     [super viewDidAppear:animated];
@@ -158,6 +127,45 @@
         self.animatedImageView.image = self.fromImageView.image;
         NSLog(@"currentIndex:%ld",currentIndex);
     }];
+    
+}
+
+
+-(void)panGestureRecognized:(UIPanGestureRecognizer *)pan{
+    
+    static CGPoint initialPoint;
+    CGPoint transition = [pan translationInView:self.view];
+    PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photosGalleryScroll currentPhoto];
+    
+    if (pan.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"currentIndex:%ld",self.photosGalleryScroll.currentIndex);
+        initialPoint = currentPhoto.center;
+        
+    }else if(pan.state == UIGestureRecognizerStateChanged){
+        
+        currentPhoto.center = CGPointMake(initialPoint.x,initialPoint.y + transition.y);
+        self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x, currentPhoto.center.y);
+        
+    }else if ((pan.state == UIGestureRecognizerStateEnded) || (pan.state ==UIGestureRecognizerStateCancelled)){
+        
+        if (ABS(transition.y) > 50) {
+            
+            [self dismissPhotoGalleryAnimated:YES];
+            
+        }else{
+            
+            
+            [UIView animateWithDuration:ANIMATEDURATION delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                currentPhoto.center = initialPoint;
+            } completion:nil];
+//            UIDynamicAnimator *animator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
+//            UISnapBehavior *snap = [[UISnapBehavior alloc]initWithItem:currentPhoto snapToPoint:initialPoint];
+//            [animator addBehavior:snap];
+//            self.animator = animator;
+            
+        }
+        
+    }
     
 }
 
@@ -199,19 +207,6 @@
 
 }
 
-
-
-#pragma UIScrollViewDelegate
-
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-//    
-//    NSInteger currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width;
-//    self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
-//    self.fromImageView.hidden = YES;
-//    self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
-//    self.animatedImageView.image = self.fromImageView.image;
-//    
-//}
 
 
 
