@@ -10,7 +10,6 @@
 		430AE74259664B6936597611 /* libPods-KYElegantPhotoGallery-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F11EDB166D22C0A60400D96 /* libPods-KYElegantPhotoGallery-Demo.a */; };
 		5F03000F1B1AF310001E78D2 /* PhotoGalleryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F03000E1B1AF310001E78D2 /* PhotoGalleryScrollView.m */; };
 		5F0300131B1AF36B001E78D2 /* PhotoGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0300121B1AF36B001E78D2 /* PhotoGalleryImageView.m */; };
-		5F0300191B1CA60D001E78D2 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0300181B1CA60D001E78D2 /* UIImage+ImageEffects.m */; };
 		5F5049FF1B1A1DDE005E90B8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F5049FE1B1A1DDE005E90B8 /* main.m */; };
 		5F504A021B1A1DDE005E90B8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A011B1A1DDE005E90B8 /* AppDelegate.m */; };
 		5F504A051B1A1DDE005E90B8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A041B1A1DDE005E90B8 /* ViewController.m */; };
@@ -19,6 +18,7 @@
 		5F504A0D1B1A1DDE005E90B8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F504A0B1B1A1DDE005E90B8 /* LaunchScreen.xib */; };
 		5F504A191B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A181B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m */; };
 		5F504A241B1A1F26005E90B8 /* KYPhotoGallery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */; };
+		5FDC184D1B1E1129003AC064 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDC184C1B1E1129003AC064 /* UIImage+ImageEffects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,8 +38,6 @@
 		5F0300111B1AF36B001E78D2 /* PhotoGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoGalleryImageView.h; path = Classes/PhotoGalleryScrollView/PhotoGalleryImageView.h; sourceTree = SOURCE_ROOT; };
 		5F0300121B1AF36B001E78D2 /* PhotoGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoGalleryImageView.m; path = Classes/PhotoGalleryScrollView/PhotoGalleryImageView.m; sourceTree = SOURCE_ROOT; };
 		5F0300161B1AF3DB001E78D2 /* Macro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Macro.h; path = Classes/Helpers/Macro.h; sourceTree = SOURCE_ROOT; };
-		5F0300171B1CA60D001E78D2 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
-		5F0300181B1CA60D001E78D2 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		5F5049F91B1A1DDE005E90B8 /* KYElegantPhotoGallery-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KYElegantPhotoGallery-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F5049FD1B1A1DDE005E90B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F5049FE1B1A1DDE005E90B8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -55,6 +53,8 @@
 		5F504A181B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYElegantPhotoGallery_DemoTests.m; sourceTree = "<group>"; };
 		5F504A221B1A1F26005E90B8 /* KYPhotoGallery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYPhotoGallery.h; path = Classes/KYPhotoGallery.h; sourceTree = SOURCE_ROOT; };
 		5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYPhotoGallery.m; path = Classes/KYPhotoGallery.m; sourceTree = SOURCE_ROOT; };
+		5FDC184B1B1E1129003AC064 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageEffects.h"; path = "Classes/Helpers/UIImage+ImageEffects.h"; sourceTree = SOURCE_ROOT; };
+		5FDC184C1B1E1129003AC064 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageEffects.m"; path = "Classes/Helpers/UIImage+ImageEffects.m"; sourceTree = SOURCE_ROOT; };
 		9A3448231358A2E399A6B3DF /* Pods-KYElegantPhotoGallery-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYElegantPhotoGallery-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KYElegantPhotoGallery-Demo/Pods-KYElegantPhotoGallery-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		DBA26B347BFDA47EB81C911D /* Pods-KYElegantPhotoGallery-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYElegantPhotoGallery-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KYElegantPhotoGallery-Demo/Pods-KYElegantPhotoGallery-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,8 +90,8 @@
 			isa = PBXGroup;
 			children = (
 				5F0300161B1AF3DB001E78D2 /* Macro.h */,
-				5F0300171B1CA60D001E78D2 /* UIImage+ImageEffects.h */,
-				5F0300181B1CA60D001E78D2 /* UIImage+ImageEffects.m */,
+				5FDC184B1B1E1129003AC064 /* UIImage+ImageEffects.h */,
+				5FDC184C1B1E1129003AC064 /* UIImage+ImageEffects.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -324,7 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F0300191B1CA60D001E78D2 /* UIImage+ImageEffects.m in Sources */,
+				5FDC184D1B1E1129003AC064 /* UIImage+ImageEffects.m in Sources */,
 				5F504A051B1A1DDE005E90B8 /* ViewController.m in Sources */,
 				5F0300131B1AF36B001E78D2 /* PhotoGalleryImageView.m in Sources */,
 				5F03000F1B1AF310001E78D2 /* PhotoGalleryScrollView.m in Sources */,
