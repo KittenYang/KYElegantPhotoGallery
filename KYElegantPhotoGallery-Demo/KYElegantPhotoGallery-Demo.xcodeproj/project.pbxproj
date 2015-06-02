@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		430AE74259664B6936597611 /* libPods-KYElegantPhotoGallery-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F11EDB166D22C0A60400D96 /* libPods-KYElegantPhotoGallery-Demo.a */; };
 		5F03000F1B1AF310001E78D2 /* PhotoGalleryScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F03000E1B1AF310001E78D2 /* PhotoGalleryScrollView.m */; };
 		5F0300131B1AF36B001E78D2 /* PhotoGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0300121B1AF36B001E78D2 /* PhotoGalleryImageView.m */; };
 		5F0300191B1CA60D001E78D2 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0300181B1CA60D001E78D2 /* UIImage+ImageEffects.m */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F11EDB166D22C0A60400D96 /* libPods-KYElegantPhotoGallery-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KYElegantPhotoGallery-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F03000D1B1AF310001E78D2 /* PhotoGalleryScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoGalleryScrollView.h; path = Classes/PhotoGalleryScrollView/PhotoGalleryScrollView.h; sourceTree = SOURCE_ROOT; };
 		5F03000E1B1AF310001E78D2 /* PhotoGalleryScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoGalleryScrollView.m; path = Classes/PhotoGalleryScrollView/PhotoGalleryScrollView.m; sourceTree = SOURCE_ROOT; };
 		5F0300111B1AF36B001E78D2 /* PhotoGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoGalleryImageView.h; path = Classes/PhotoGalleryScrollView/PhotoGalleryImageView.h; sourceTree = SOURCE_ROOT; };
@@ -53,6 +55,8 @@
 		5F504A181B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KYElegantPhotoGallery_DemoTests.m; sourceTree = "<group>"; };
 		5F504A221B1A1F26005E90B8 /* KYPhotoGallery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYPhotoGallery.h; path = Classes/KYPhotoGallery.h; sourceTree = SOURCE_ROOT; };
 		5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYPhotoGallery.m; path = Classes/KYPhotoGallery.m; sourceTree = SOURCE_ROOT; };
+		9A3448231358A2E399A6B3DF /* Pods-KYElegantPhotoGallery-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYElegantPhotoGallery-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KYElegantPhotoGallery-Demo/Pods-KYElegantPhotoGallery-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		DBA26B347BFDA47EB81C911D /* Pods-KYElegantPhotoGallery-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYElegantPhotoGallery-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KYElegantPhotoGallery-Demo/Pods-KYElegantPhotoGallery-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430AE74259664B6936597611 /* libPods-KYElegantPhotoGallery-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +78,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B7E46C3DDE0E620C9F2B68E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0F11EDB166D22C0A60400D96 /* libPods-KYElegantPhotoGallery-Demo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5F0300071B1ACD09001E78D2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +113,8 @@
 				5F5049FB1B1A1DDE005E90B8 /* KYElegantPhotoGallery-Demo */,
 				5F504A151B1A1DDE005E90B8 /* KYElegantPhotoGallery-DemoTests */,
 				5F5049FA1B1A1DDE005E90B8 /* Products */,
+				B7355ADD5D230820956EBFAF /* Pods */,
+				4B7E46C3DDE0E620C9F2B68E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -165,6 +180,15 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
+		B7355ADD5D230820956EBFAF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DBA26B347BFDA47EB81C911D /* Pods-KYElegantPhotoGallery-Demo.debug.xcconfig */,
+				9A3448231358A2E399A6B3DF /* Pods-KYElegantPhotoGallery-Demo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -172,9 +196,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5F504A1C1B1A1DDE005E90B8 /* Build configuration list for PBXNativeTarget "KYElegantPhotoGallery-Demo" */;
 			buildPhases = (
+				6DCE13F8316CBBE04EF1B000 /* Check Pods Manifest.lock */,
 				5F5049F51B1A1DDE005E90B8 /* Sources */,
 				5F5049F61B1A1DDE005E90B8 /* Frameworks */,
 				5F5049F71B1A1DDE005E90B8 /* Resources */,
+				460272751BBD550A2D71E4D7 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -259,6 +285,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		460272751BBD550A2D71E4D7 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KYElegantPhotoGallery-Demo/Pods-KYElegantPhotoGallery-Demo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6DCE13F8316CBBE04EF1B000 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5F5049F51B1A1DDE005E90B8 /* Sources */ = {
@@ -397,6 +456,7 @@
 		};
 		5F504A1D1B1A1DDE005E90B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DBA26B347BFDA47EB81C911D /* Pods-KYElegantPhotoGallery-Demo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "KYElegantPhotoGallery-Demo/Info.plist";
@@ -408,6 +468,7 @@
 		};
 		5F504A1E1B1A1DDE005E90B8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A3448231358A2E399A6B3DF /* Pods-KYElegantPhotoGallery-Demo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "KYElegantPhotoGallery-Demo/Info.plist";

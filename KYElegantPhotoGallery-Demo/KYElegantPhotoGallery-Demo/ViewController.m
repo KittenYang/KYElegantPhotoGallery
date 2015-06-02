@@ -23,6 +23,7 @@
 //    UIImageView *testImageView;
     NSMutableArray *imageViewArray;
     NSMutableArray *images;
+    NSMutableArray *imagesUrls;
 }
 
 - (void)viewDidLoad {
@@ -35,6 +36,16 @@
             [images addObject:image];
         }
     }
+    
+    imagesUrls = [NSMutableArray arrayWithObjects:
+                  @"http://ww1.sinaimg.cn/bmiddle/62dd2005jw1esphsmx3o4j20rs0rsaco.jpg",
+                  @"http://ww1.sinaimg.cn/bmiddle/7f5cf1ffgw1espju5u0awj20lc0c03yz.jpg",
+                  @"http://ww4.sinaimg.cn/bmiddle/7f5cf1ffgw1espjpik3anj20zk0k075x.jpg",
+                  @"http://ww3.sinaimg.cn/bmiddle/7f5cf1ffgw1esmpp5o7dkj20fi08rta7.jpg",
+                  @"http://ww2.sinaimg.cn/bmiddle/7f5cf1ffgw1esm8ezg84qj20lc0c0ac5.jpg",
+                  @"http://ww4.sinaimg.cn/bmiddle/7f5cf1ffgw1esm88fpwwyj20zk0k0mzu.jpg",
+                  nil];
+
     
     [self setTestImages];
 }
@@ -67,10 +78,11 @@
 #pragma mark -- Tapped
 - (void)imgTaped:(UITapGestureRecognizer *)sender{
     
-    _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view];
+    _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view andImageUrls:imagesUrls andInitialIndex:sender.view.tag];
     _photoGallery.imageViewArray = imageViewArray;
-    _photoGallery.initialPageIndex = sender.view.tag;
-    [self presentViewController:_photoGallery animated:NO completion:nil];
+    [_photoGallery finishAsynDownload:^{
+        [self presentViewController:_photoGallery animated:NO completion:nil];
+    }];
     
 }
 

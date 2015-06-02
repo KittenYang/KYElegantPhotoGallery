@@ -1,0 +1,14 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '6.0'
+
+target 'KYElegantPhotoGallery-Demo' do
+
+pod 'UCZProgressView'
+pod 'SDWebImage', '~> 3.7.2'
+
+end
+
+target 'KYElegantPhotoGallery-DemoTests' do
+
+end
+

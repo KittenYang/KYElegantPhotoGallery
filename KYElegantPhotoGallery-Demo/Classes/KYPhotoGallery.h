@@ -10,12 +10,21 @@
 
 @interface KYPhotoGallery : UIViewController
 
--(id)initWithTappedImageView:(UIImageView *)tappedImageView;
+
+/* 
+   @parm:  tappedImageView 当前点击的图片视图
+   @parm:  imagesUrls   所有图片的URL链接
+   @parm:  currentIndex 当前图片的序号，第一张图请传入1，第二张为2，以此类推...
+ 
+*/
+
+-(id)initWithTappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex;
 
 @property(nonatomic,strong)NSMutableArray *imageViewArray;
-@property(nonatomic,assign)NSInteger initialPageIndex;
 
 
 -(void)dismissPhotoGalleryAnimated:(BOOL)animated;
+-(void)finishAsynDownload:(void(^)(void))finishAsynDownloadBlock;
+
 
 @end

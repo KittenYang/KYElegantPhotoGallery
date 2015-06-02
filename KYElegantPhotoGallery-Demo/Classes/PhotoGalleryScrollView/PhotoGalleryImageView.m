@@ -46,7 +46,7 @@
         default:
             break;
     }
-    [[self nextResponder] touchesEnded:touches withEvent:event];
+
 }
 
 

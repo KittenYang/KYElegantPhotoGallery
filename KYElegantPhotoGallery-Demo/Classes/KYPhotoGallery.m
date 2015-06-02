@@ -13,6 +13,9 @@
 #import "Macro.h"
 #import "PhotoGalleryScrollView.h"
 
+#import "UCZProgressView.h"
+#import "UIImageView+WebCache.h"
+
 @interface KYPhotoGallery ()<UIScrollViewDelegate>
 
 @property(nonatomic,strong)UIImageView *fromImageView;
@@ -21,7 +24,10 @@
 @property(nonatomic,strong)UIImageView *animatedImageView;
 @property(nonatomic,assign)CGRect initialImageViewFrame;
 @property(nonatomic,assign)CGRect finalImageViewFrame;
+@property(nonatomic,assign)NSInteger initialPageIndex;
 
+@property(nonatomic,copy)void (^finishAsynDownloadBlock)(void);
+@property(nonatomic,strong)NSMutableArray *imagesUrls;
 @end
 
 @implementation KYPhotoGallery{
@@ -33,11 +39,58 @@
     int _previousModalPresentationStyle;
 }
 
--(id)initWithTappedImageView:(UIImageView *)tappedImageView{
+-(id)initWithTappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex{
+    
     self = [super init];
     if (self) {
+        UCZProgressView *progressView = [[UCZProgressView alloc]initWithFrame:CGRectMake(0, 0, tappedImageView.bounds.size.width, tappedImageView.bounds.size.height)];
+        [tappedImageView addSubview:progressView];
+        progressView.indeterminate = YES;
+        progressView.blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        progressView.usesVibrancyEffect = NO;
+        progressView.showsText = YES;
+        progressView.lineWidth = 1.0f;
+        progressView.radius = 20.0f;
+        progressView.textSize = 12.0f;
+
+        _imagesUrls = imagesUrls;
+        
+        [[SDWebImageManager sharedManager] downloadImageWithURL:_imagesUrls[currentIndex - 1] options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            NSLog(@"receivedSize:%ld",receivedSize);
+            NSLog(@"expectedSize:%ld",expectedSize);
+            
+            progressView.progress = receivedSize / expectedSize;
+
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            if(image){
+                tappedImageView.image = image;
+                progressView.progress = 1.0f;
+                [progressView progressAnimiationDidStop:^{
+                    self.finishAsynDownloadBlock();
+                }];
+
+            }
+        }];
+        
+//        [tappedImageView sd_setImageWithURL:[NSURL URLWithString:_imagesUrls[currentIndex-1]] placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//                NSLog(@"receivedSize:%ld",receivedSize);
+//                NSLog(@"expectedSize:%ld",expectedSize);
+//            
+//                progressView.progress = receivedSize / expectedSize;
+//        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//            if (image) {
+//                progressView.progress = 1.0f;
+//                [progressView progressAnimiationDidStop:^{
+//                    self.finishAsynDownloadBlock();
+//                }];
+//            }
+//            
+//        }];
+    
         
         self.fromImageView = tappedImageView;
+        self.initialPageIndex = currentIndex;
+        
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
             self.modalPresentationStyle = UIModalPresentationCustom;
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -55,11 +108,28 @@
     return self;
 }
 
+-(void)finishAsynDownload:(void(^)(void))finishAsynDownloadBlock{
+    self.finishAsynDownloadBlock = finishAsynDownloadBlock;
+    
+}
+
+//-(void)setImageViewArray:(NSMutableArray *)imageViewArray{
+//    if (_imageViewArray != imageViewArray) {
+//        _imageViewArray = imageViewArray;
+//    }
+//    
+//    for (int i = 0; i<_imageViewArray.count; i++) {
+//        UIImageView *imgv = (UIImageView *)_imageViewArray[i];
+//        [imgv sd_setImageWithURL:_imagesUrls[i] placeholderImage:nil options:SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//            self.finishAsynDownloadBlock();
+//        }];
+//    }
+//    
+//}
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     
 }
 
@@ -157,10 +227,10 @@
         CATransform3D t = CATransform3DIdentity;
         t.m34  = 1.0/-1000;
         t = CATransform3DRotate(t,factorOfAngle*(M_PI/5), transition.y>0?-1:1, 0, 0);
-
-        t = CATransform3DScale(t, 1-factorOfScale*0.1, 1-factorOfScale*0.1, 0);
+        t = CATransform3DScale(t, 1-factorOfScale*0.2, 1-factorOfScale*0.2, 0);
 
         currentPhoto.layer.transform = t;
+        self.animatedImageView.layer.transform = t;
         
         self.blurView.alpha = 1 - Y / SCROLLDISTANCE;
         
@@ -169,14 +239,16 @@
         
     }else if ((pan.state == UIGestureRecognizerStateEnded) || (pan.state ==UIGestureRecognizerStateCancelled)){
         
-        if (ABS(transition.y) > SCROLLDISTANCE) {
+        if (ABS(transition.y) > 100) {
             
-            [self dismissPhotoGalleryAnimated:YES];
+            [self dismissPhotoGalleryAnimated:YES ];
             
         }else{
             
-            currentPhoto.layer.transform = CATransform3DIdentity;
+            self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x,initialPoint.y);
+            self.animatedImageView.layer.transform = CATransform3DIdentity;
             [UIView animateWithDuration:ANIMATEDURATION delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                currentPhoto.layer.transform = CATransform3DIdentity;
                 currentPhoto.center = initialPoint;
                 self.blurView.alpha = 1.0f;
             } completion:nil];
@@ -221,11 +293,10 @@
     self.photosGalleryScroll.hidden = YES;
     self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [UIView animateWithDuration:ANIMATEDURATION delay:0.0f usingSpringWithDamping:ANIMATEDAMPING initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        
         self.blurView.alpha = 0.0f;
         self.animatedImageView.frame = self.initialImageViewFrame;
-
-        self.presentingViewController.view.transform = CGAffineTransformIdentity;
-
+        self.animatedImageView.layer.transform = CATransform3DIdentity;
         
     } completion:^(BOOL finished) {
         
@@ -237,6 +308,7 @@
                 _applicationTopViewController.modalPresentationStyle = _previousModalPresentationStyle;
             }
         }];
+        
     }];
 
 }

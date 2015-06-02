@@ -1,0 +1,15 @@
+PODS:
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
+  - UCZProgressView (1.0.1)
+
+DEPENDENCIES:
+  - SDWebImage (~> 3.7.2)
+  - UCZProgressView
+
+SPEC CHECKSUMS:
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
+  UCZProgressView: 32fa5c572ff1300bf22553c8286600d9ae42f50f
+
+COCOAPODS: 0.37.1
