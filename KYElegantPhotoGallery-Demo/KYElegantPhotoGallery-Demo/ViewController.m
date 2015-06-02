@@ -12,39 +12,40 @@
 #import "ViewController.h"
 #import "KYPhotoGallery.h"
 #import "Macro.h"
+#import "UIImageView+WebCache.h"
 
 @interface ViewController ()
 
 @property(nonatomic,strong)KYPhotoGallery *photoGallery;
+@property(nonatomic,strong)NSMutableArray *bigImagesUrls;
+@property(nonatomic,strong)NSMutableArray *thumbImagesUrls;
+@property(nonatomic,strong)NSMutableArray *imageViewArray;  //保存所有UIImageView
 
 @end
 
-@implementation ViewController{
-//    UIImageView *testImageView;
-    NSMutableArray *imageViewArray;
-    NSMutableArray *images;
-    NSMutableArray *imagesUrls;
-}
+@implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    images = [NSMutableArray array];
-    @autoreleasepool{
-        for (int i =0; i<6; i++) {
-            UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"bkgImg%d.jpg",i+1]];
-            [images addObject:image];
-        }
-    }
+
+    self.thumbImagesUrls = [NSMutableArray arrayWithObjects:
+                            @"http://ww2.sinaimg.cn/thumbnail/53932067gw1esjqfk3z6zj20hh09uabk.jpg",
+                            @"http://ww3.sinaimg.cn/thumbnail/53932067gw1esphcqgpurj20gy09bq46.jpg",
+                            @"http://ww1.sinaimg.cn/thumbnail/53932067gw1esjphc90usj20hr09rq43.jpg",
+                            @"http://ww4.sinaimg.cn/thumbnail/53932067gw1eshmw8t1s9j20jt0bw77l.jpg",
+                            @"http://ww3.sinaimg.cn/thumbnail/9c93352fgw1erthv6ncpwg208g05mkjl.gif",
+                            @"http://ww3.sinaimg.cn/thumbnail/53932067gw1esj1ulbuz1g20b30b01l0.gif",
+                            nil];
     
-    imagesUrls = [NSMutableArray arrayWithObjects:
-                  @"http://ww1.sinaimg.cn/bmiddle/62dd2005jw1esphsmx3o4j20rs0rsaco.jpg",
-                  @"http://ww1.sinaimg.cn/bmiddle/7f5cf1ffgw1espju5u0awj20lc0c03yz.jpg",
-                  @"http://ww4.sinaimg.cn/bmiddle/7f5cf1ffgw1espjpik3anj20zk0k075x.jpg",
-                  @"http://ww3.sinaimg.cn/bmiddle/7f5cf1ffgw1esmpp5o7dkj20fi08rta7.jpg",
-                  @"http://ww2.sinaimg.cn/bmiddle/7f5cf1ffgw1esm8ezg84qj20lc0c0ac5.jpg",
-                  @"http://ww4.sinaimg.cn/bmiddle/7f5cf1ffgw1esm88fpwwyj20zk0k0mzu.jpg",
-                  nil];
+    self.bigImagesUrls = [NSMutableArray arrayWithObjects:
+                            @"http://ww2.sinaimg.cn/bmiddle/53932067gw1esjqfk3z6zj20hh09uabk.jpg",
+                            @"http://ww3.sinaimg.cn/bmiddle/53932067gw1esphcqgpurj20gy09bq46.jpg",
+                            @"http://ww1.sinaimg.cn/bmiddle/53932067gw1esjphc90usj20hr09rq43.jpg",
+                            @"http://ww4.sinaimg.cn/bmiddle/53932067gw1eshmw8t1s9j20jt0bw77l.jpg",
+                            @"http://ww3.sinaimg.cn/bmiddle/9c93352fgw1erthv6ncpwg208g05mkjl.gif",
+                            @"http://ww3.sinaimg.cn/bmiddle/53932067gw1esj1ulbuz1g20b30b01l0.gif",
+                            nil];
 
     
     [self setTestImages];
@@ -52,7 +53,7 @@
 
 -(void)setTestImages{
     
-    imageViewArray = [NSMutableArray array];
+    self.imageViewArray = [NSMutableArray array];
     @autoreleasepool{
         for (int i = 0; i<6; i++) {
             UIImageView *img = [[UIImageView alloc]initWithFrame:CGRectZero];
@@ -61,16 +62,18 @@
             }else{
                 img.frame = CGRectMake(PADDING + (i-3)*(IMAGE_SIZE+PADDING), self.view.center.y+IMAGE_SIZE+10, IMAGE_SIZE, IMAGE_SIZE);
             }
+            
             img.clipsToBounds = YES;
             img.userInteractionEnabled = YES;
             img.contentMode = UIViewContentModeScaleAspectFill;
-            img.image = images[i];
             img.tag = i+1;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imgTaped:)];
             [img addGestureRecognizer:tap];
             [self.view addSubview:img];
             
-            [imageViewArray addObject:img];
+            [img sd_setImageWithURL:self.thumbImagesUrls[i] placeholderImage:nil options:SDWebImageLowPriority];
+            
+            [self.imageViewArray addObject:img];
         }
     }
 }
@@ -78,8 +81,8 @@
 #pragma mark -- Tapped
 - (void)imgTaped:(UITapGestureRecognizer *)sender{
     
-    _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view andImageUrls:imagesUrls andInitialIndex:sender.view.tag];
-    _photoGallery.imageViewArray = imageViewArray;
+    _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view andImageUrls:self.bigImagesUrls andInitialIndex:sender.view.tag];
+    _photoGallery.imageViewArray = self.imageViewArray;
     [_photoGallery finishAsynDownload:^{
         [self presentViewController:_photoGallery animated:NO completion:nil];
     }];

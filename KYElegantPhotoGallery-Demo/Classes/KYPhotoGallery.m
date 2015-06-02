@@ -25,6 +25,7 @@
 @property(nonatomic,assign)CGRect initialImageViewFrame;
 @property(nonatomic,assign)CGRect finalImageViewFrame;
 @property(nonatomic,assign)NSInteger initialPageIndex;
+@property(nonatomic,assign)NSInteger currentIndex;
 
 @property(nonatomic,copy)void (^finishAsynDownloadBlock)(void);
 @property(nonatomic,strong)NSMutableArray *imagesUrls;
@@ -37,59 +38,21 @@
     // iOS 7
     UIViewController *_applicationTopViewController;
     int _previousModalPresentationStyle;
+    
+    NSMutableArray *indexs;
 }
 
--(id)initWithTappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex{
+-(id)initWithTappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex {
     
     self = [super init];
     if (self) {
-        UCZProgressView *progressView = [[UCZProgressView alloc]initWithFrame:CGRectMake(0, 0, tappedImageView.bounds.size.width, tappedImageView.bounds.size.height)];
-        [tappedImageView addSubview:progressView];
-        progressView.indeterminate = YES;
-        progressView.blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        progressView.usesVibrancyEffect = NO;
-        progressView.showsText = YES;
-        progressView.lineWidth = 1.0f;
-        progressView.radius = 20.0f;
-        progressView.textSize = 12.0f;
-
-        _imagesUrls = imagesUrls;
         
-        [[SDWebImageManager sharedManager] downloadImageWithURL:_imagesUrls[currentIndex - 1] options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            NSLog(@"receivedSize:%ld",receivedSize);
-            NSLog(@"expectedSize:%ld",expectedSize);
-            
-            progressView.progress = receivedSize / expectedSize;
-
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-            if(image){
-                tappedImageView.image = image;
-                progressView.progress = 1.0f;
-                [progressView progressAnimiationDidStop:^{
-                    self.finishAsynDownloadBlock();
-                }];
-
-            }
-        }];
-        
-//        [tappedImageView sd_setImageWithURL:[NSURL URLWithString:_imagesUrls[currentIndex-1]] placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                NSLog(@"receivedSize:%ld",receivedSize);
-//                NSLog(@"expectedSize:%ld",expectedSize);
-//            
-//                progressView.progress = receivedSize / expectedSize;
-//        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//            if (image) {
-//                progressView.progress = 1.0f;
-//                [progressView progressAnimiationDidStop:^{
-//                    self.finishAsynDownloadBlock();
-//                }];
-//            }
-//            
-//        }];
-    
-        
+        self.imagesUrls = imagesUrls;
         self.fromImageView = tappedImageView;
         self.initialPageIndex = currentIndex;
+        
+        [self loadingImage:tappedImageView withURL:_imagesUrls[currentIndex-1] shouldCompleted:YES];
+        
         
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
             self.modalPresentationStyle = UIModalPresentationCustom;
@@ -112,20 +75,6 @@
     self.finishAsynDownloadBlock = finishAsynDownloadBlock;
     
 }
-
-//-(void)setImageViewArray:(NSMutableArray *)imageViewArray{
-//    if (_imageViewArray != imageViewArray) {
-//        _imageViewArray = imageViewArray;
-//    }
-//    
-//    for (int i = 0; i<_imageViewArray.count; i++) {
-//        UIImageView *imgv = (UIImageView *)_imageViewArray[i];
-//        [imgv sd_setImageWithURL:_imagesUrls[i] placeholderImage:nil options:SDWebImageLowPriority completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//            self.finishAsynDownloadBlock();
-//        }];
-//    }
-//    
-//}
 
 
 - (void)viewDidLoad {
@@ -162,6 +111,8 @@
     _photosGalleryScroll.photoGallery = self;
     [self.view addSubview:_photosGalleryScroll];
     
+    indexs = [NSMutableArray array];
+    [indexs addObject:[NSNumber numberWithInteger:self.initialPageIndex-1]];
     
     //动画视图
     self.animatedImageView = [[UIImageView alloc]initWithImage:self.fromImageView.image];
@@ -187,17 +138,91 @@
     }];
     
     
-    [self.photosGalleryScroll DidEndDeceleratBlock:^(NSInteger currentIndex) {
+    [self.photosGalleryScroll DidScrollBlock:^(NSInteger currentIndex) {
         self.fromImageView.hidden = NO;
         self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
         self.fromImageView.hidden = YES;
         self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
-        self.animatedImageView.image = self.fromImageView.image;
-        NSLog(@"currentIndex:%ld",currentIndex);
+
+        
+//        NSLog(@"currentIndex:%ld",currentIndex);
+    }];
+    
+    
+    [self.photosGalleryScroll DidEndDecelerateBlock:^(NSInteger currentIndex) {
+        
+        self.currentIndex = currentIndex;
+        UIImageView *photoInScrollView = (UIImageView *)self.photosGalleryScroll.photos[currentIndex];
+        
+        if (![indexs containsObject:[NSNumber numberWithInteger:currentIndex]]) {
+            [indexs addObject:[NSNumber numberWithInteger:currentIndex]];
+            [self loadingImage:photoInScrollView withURL:self.imagesUrls[currentIndex] shouldCompleted:NO];
+
+        }
     }];
     
 }
 
+#pragma loadingImage
+-(void)loadingImage:(UIImageView *)needLoadingImageView withURL:(NSString *)url shouldCompleted:(BOOL)flag{
+    
+    UCZProgressView *progressView = [[UCZProgressView alloc]initWithFrame:CGRectMake(0, 0, needLoadingImageView.bounds.size.width, needLoadingImageView.bounds.size.height)];
+    BOOL isInCache = [[SDImageCache sharedImageCache]diskImageExistsWithKey:url];
+    
+    if (!isInCache) {
+        
+        [needLoadingImageView addSubview:progressView];
+        progressView.indeterminate = YES;
+        progressView.blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        progressView.usesVibrancyEffect = NO;
+        progressView.showsText = YES;
+        progressView.lineWidth = 1.0f;
+        progressView.radius = 20.0f;
+        progressView.textSize = 12.0f;
+    }
+    
+    
+    
+    [needLoadingImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        
+        progressView.progress = (CGFloat)receivedSize / expectedSize;
+        
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+
+        progressView.progress = 1.0f;
+//        if (!isInCache) {
+        [progressView progressAnimiationDidStop:^{
+            if (flag && image) {
+                
+                self.finishAsynDownloadBlock();
+                
+            }else if (!flag && image){
+                
+                UIImageView *parentImageView = (UIImageView *)self.imageViewArray[self.currentIndex];
+                parentImageView.image = needLoadingImageView.image;
+                self.animatedImageView.image = parentImageView.image;
+            }
+        }];
+            
+//        }else{
+//            [progressView progressAnimiationDidStop:^{
+//                
+//            }];
+//            
+//            if (flag && image) {
+//                
+//                self.finishAsynDownloadBlock();
+//                
+//            }else if (!flag && image){
+//                
+//                UIImageView *parentImageView = (UIImageView *)self.imageViewArray[self.currentIndex];
+//                parentImageView.image = needLoadingImageView.image;
+//                self.animatedImageView.image = parentImageView.image;
+//            }
+//        }
+        
+    }];
+}
 
 -(void)panGestureRecognized:(UIPanGestureRecognizer *)pan{
     
@@ -234,9 +259,6 @@
         
         self.blurView.alpha = 1 - Y / SCROLLDISTANCE;
         
-
-        
-        
     }else if ((pan.state == UIGestureRecognizerStateEnded) || (pan.state ==UIGestureRecognizerStateCancelled)){
         
         if (ABS(transition.y) > 100) {
@@ -244,7 +266,7 @@
             [self dismissPhotoGalleryAnimated:YES ];
             
         }else{
-            
+    
             self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x,initialPoint.y);
             self.animatedImageView.layer.transform = CATransform3DIdentity;
             [UIView animateWithDuration:ANIMATEDURATION delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{

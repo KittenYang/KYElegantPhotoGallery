@@ -13,7 +13,8 @@
 
 @interface PhotoGalleryScrollView()<DetectingImageViewDelegate,UIScrollViewDelegate>
 
-@property(nonatomic,copy)void (^DidEndDeceleratBlock)(NSInteger currentIndex);
+@property(nonatomic,copy)void (^DidScrollBlock)(NSInteger currentIndex);
+@property(nonatomic,copy)void (^DidEndDecelerateBlock)(NSInteger currentIndex);
 
 @end
 
@@ -79,12 +80,20 @@
     
 }
 
--(void)DidEndDeceleratBlock:(void(^)(NSInteger currentIndex))didEndDeceleratBlock{
 
-    self.DidEndDeceleratBlock = didEndDeceleratBlock;
+#pragma method
+-(void)DidScrollBlock:(void(^)(NSInteger currentIndex))didEndScrollBlock{
+
+    self.DidScrollBlock = didEndScrollBlock;
     
 }
 
+-(void)DidEndDecelerateBlock:(void(^)(NSInteger currentIndex))didEndDeceleratBlock{
+    self.DidEndDecelerateBlock = didEndDeceleratBlock;
+}
+
+
+#pragma UIScrollViewDelegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
     if (isFirst) {
@@ -92,11 +101,20 @@
     }else{
         currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width + 1;
         currentIndex = MAX(1, currentIndex);
-        self.DidEndDeceleratBlock(currentIndex-1);
+        self.DidScrollBlock(currentIndex-1);
     }
     
 }
 
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    if (isFirst) {
+        isFirst = NO;
+    }else{
+        currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width + 1;
+        currentIndex = MAX(1, currentIndex);
+        self.DidEndDecelerateBlock(currentIndex-1);
+    }
+}
 
 
 

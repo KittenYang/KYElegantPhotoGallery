@@ -18,7 +18,9 @@
 
 -(id)initWithFrame:(CGRect)frame imageViews:(NSMutableArray *)imageViewArray initialPageIndex:(NSInteger)initialPageIndex;
 
--(void)DidEndDeceleratBlock:(void(^)(NSInteger currentIndex))didEndDeceleratBlock;
+-(void)DidScrollBlock:(void(^)(NSInteger currentIndex))didEndScrollBlock;
+-(void)DidEndDecelerateBlock:(void(^)(NSInteger currentIndex))didEndDeceleratBlock;
+
 
 -(NSInteger)currentIndex; // 当前图片的编号
 -(PhotoGalleryImageView *)currentPhoto;
