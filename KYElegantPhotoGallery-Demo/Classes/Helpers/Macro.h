@@ -18,7 +18,7 @@
 #define PHOTOS_SPACING  20
 #define ANIMATEDURATION 0.5
 #define ANIMATEDAMPING  0.7
-#define SCROLLDISTANCE  100.0
+#define SCROLLDISTANCE  200.0
 
 
 // 识别系统版本

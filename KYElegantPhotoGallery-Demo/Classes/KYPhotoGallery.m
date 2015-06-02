@@ -132,7 +132,8 @@
 -(void)panGestureRecognized:(UIPanGestureRecognizer *)pan{
     
     static CGPoint initialPoint;
-    CGFloat factor = 0.0f;
+    CGFloat factorOfAngle = 0.0f;
+    CGFloat factorOfScale = 0.0f;
     CGPoint transition = [pan translationInView:self.view];
     PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photosGalleryScroll currentPhoto];
     
@@ -145,20 +146,25 @@
         
         currentPhoto.center = CGPointMake(initialPoint.x,initialPoint.y + transition.y);
         self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x, currentPhoto.center.y);
-        factor = ABS(transition.y)<= SCROLLDISTANCE ? MIN(1,ABS(transition.y) / SCROLLDISTANCE) : MAX(0, 1 - MAX(0, (ABS(transition.y) - SCROLLDISTANCE) / SCROLLDISTANCE));
 
+        CGFloat Y =MIN(SCROLLDISTANCE,MAX(0,ABS(transition.y)));
+        
+        //一个开口向下,顶点(SCROLLDISTANCE/2,1),过(0,0),(SCROLLDISTANCE,0)的二次函数
+        factorOfAngle = MAX(0,-4/(SCROLLDISTANCE*SCROLLDISTANCE)*Y*(Y-SCROLLDISTANCE));
+        //一个开口向下,顶点(SCROLLDISTANCE,1),过(0,0),(2*SCROLLDISTANCE,0)的二次函数
+        factorOfScale = MAX(0,-1/(SCROLLDISTANCE*SCROLLDISTANCE)*Y*(Y-2*SCROLLDISTANCE));
         
         CATransform3D t = CATransform3DIdentity;
         t.m34  = 1.0/-1000;
-        t = CATransform3DRotate(t,factor*(M_PI/6), transition.y>0?-1:1, 0, 0);
+        t = CATransform3DRotate(t,factorOfAngle*(M_PI/5), transition.y>0?-1:1, 0, 0);
 
-        t = CATransform3DScale(t,ABS(transition.y)<= SCROLLDISTANCE? 1-factor*0.1 : 0.9, ABS(transition.y)<= SCROLLDISTANCE?1-factor*0.1 : 0.9, 0);
-        
+        t = CATransform3DScale(t, 1-factorOfScale*0.1, 1-factorOfScale*0.1, 0);
+
         currentPhoto.layer.transform = t;
         
-        self.blurView.alpha = 1 - MIN(0.5,MIN(1,ABS(transition.y) / 250));
+        self.blurView.alpha = 1 - Y / SCROLLDISTANCE;
         
-        NSLog(@"factor:%f",factor);
+
         
         
     }else if ((pan.state == UIGestureRecognizerStateEnded) || (pan.state ==UIGestureRecognizerStateCancelled)){
