@@ -41,5 +41,5 @@ The loading indicator component which I forked and customized is [Here](https://
 ```
 
 ##Note:
-But I didn't add the double-tap to zoom feature.
+I didn't add the double-tap to zoom feature,but you can learn how to implement the dismiss animation and the architecture:)
 
