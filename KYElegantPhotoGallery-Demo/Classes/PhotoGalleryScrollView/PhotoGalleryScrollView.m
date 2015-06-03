@@ -133,21 +133,21 @@
 - (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch{
     NSLog(@"doubleTap");
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self.photoGallery];
-    
-    // Zoom
-    if (self.zoomScale == self.maximumZoomScale) {
-        
-        // Zoom out
-        [self setZoomScale:self.minimumZoomScale animated:YES];
-        
-    } else {
-        CGPoint touchPoint = [touch locationInView:imageView];
-        
-        // Zoom in
-        [self zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 1, 1) animated:YES];
-        
-    }
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self.photoGallery];
+//    
+//    // Zoom
+//    if (self.zoomScale == self.maximumZoomScale) {
+//        
+//        // Zoom out
+//        [self setZoomScale:self.minimumZoomScale animated:YES];
+//        
+//    } else {
+//        CGPoint touchPoint = [touch locationInView:imageView];
+//        
+//        // Zoom in
+//        [self zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 1, 1) animated:YES];
+//        
+//    }
     
 }
 
