@@ -32,8 +32,8 @@ The loading indicator component which I forked and customized is [Here](https://
 ```
 
 ##How to use
-```
-  _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view andImageUrls:self.bigImagesUrls andInitialIndex:sender.view.tag];
+```objc
+    _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view andImageUrls:self.bigImagesUrls andInitialIndex:sender.view.tag];
     _photoGallery.imageViewArray = self.imageViewArray;
     [_photoGallery finishAsynDownload:^{
         [self presentViewController:_photoGallery animated:NO completion:nil];
