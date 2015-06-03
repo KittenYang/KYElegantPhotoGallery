@@ -1,9 +1,9 @@
 # KYElegantPhotoGallery
 An elegant photo gallery. It will zoom from a thumb image and you can pan to dismiss it with cool animation.
 
-The loading indicator component which I forked and customized is ![Here](https://github.com/KittenYang/UCZProgressView)
+The loading indicator component which I forked and customized is [Here](https://github.com/KittenYang/UCZProgressView)
 
-![](demo.gif)
+<img src="demo.gif" width="300px" />
 
 `KYPhotoGallery.h`：
 
