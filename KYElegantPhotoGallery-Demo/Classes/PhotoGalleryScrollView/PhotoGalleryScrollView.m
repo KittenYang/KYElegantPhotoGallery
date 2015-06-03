@@ -66,6 +66,7 @@
         }        
     }
     self.contentSize = CGSizeMake(frame.size.width * imageViewArray.count, frame.size.height);
+    self.maximumZoomScale = 2.0f;
 }
 
 
@@ -117,15 +118,37 @@
 }
 
 
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.photos[currentIndex-1];
+}
+
 
 #pragma DetectingImageViewDelegate
 - (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch{
     NSLog(@"singleTap");
-    [self.photoGallery dismissPhotoGalleryAnimated:YES];
+    [self.photoGallery performSelector:@selector(dismissPhotoGalleryAnimated:) withObject:@(YES) afterDelay:0.2];
+//    [self.photoGallery dismissPhotoGalleryAnimated:YES];
 }
 
 - (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch{
     NSLog(@"doubleTap");
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self.photoGallery];
+    
+    // Zoom
+    if (self.zoomScale == self.maximumZoomScale) {
+        
+        // Zoom out
+        [self setZoomScale:self.minimumZoomScale animated:YES];
+        
+    } else {
+        CGPoint touchPoint = [touch locationInView:imageView];
+        
+        // Zoom in
+        [self zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 1, 1) animated:YES];
+        
+    }
+    
 }
 
 

@@ -190,7 +190,6 @@
     } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
 
         progressView.progress = 1.0f;
-//        if (!isInCache) {
         [progressView progressAnimiationDidStop:^{
             if (flag && image) {
                 
@@ -203,23 +202,6 @@
                 self.animatedImageView.image = parentImageView.image;
             }
         }];
-            
-//        }else{
-//            [progressView progressAnimiationDidStop:^{
-//                
-//            }];
-//            
-//            if (flag && image) {
-//                
-//                self.finishAsynDownloadBlock();
-//                
-//            }else if (!flag && image){
-//                
-//                UIImageView *parentImageView = (UIImageView *)self.imageViewArray[self.currentIndex];
-//                parentImageView.image = needLoadingImageView.image;
-//                self.animatedImageView.image = parentImageView.image;
-//            }
-//        }
         
     }];
 }
