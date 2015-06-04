@@ -3,7 +3,7 @@ An elegant photo gallery. It will zoom from a thumb image and you can pan to dis
 
 The loading indicator component which I forked and customized is [Here](https://github.com/KittenYang/UCZProgressView)
 
-<img src="demo.gif" width="300px" />
+<img src="http://ww4.sinaimg.cn/bmiddle/aa1f155cgw1esraezg38cg205s0ache0.gif" width="300px" />
 
 `KYPhotoGallery.h`：
 
