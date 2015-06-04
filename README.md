@@ -40,6 +40,48 @@ The loading indicator component which I forked and customized is [Here](https://
     }];
 ```
 
+
+##[A brief intro of the pan-to-dismiss animation](http://kittenyang.com/function-animtion/):
+
+I use two quadratic functions(二次函数) to generate two factors:** factorOfAngle ** & ** factorOfScale **. 
+
+The ** factorOfAngle ** is the factor to make the view rotaton around the X axis,the ** factorOfScale ** of course is the factor to make view scale.And here are the graphs of ** factorOfAngle ** & ** factorOfScale ** blow.
+
+###** factorOfAngle **
+
+<img src="http://kittenyang.com/content/images/2015/Jun/Screen-Shot-2015-06-04-at-14-05-39.png" width="700px" />
+
+<p align="center" >
+   <img src="http://kittenyang.com/content/images/2015/Jun/CodeCogsEqn--1-.gif" width="150px" />
+</p>
+
+
+###** factorOfScale **
+
+<img src="http://kittenyang.com/content/images/2015/Jun/Screen-Shot-2015-06-04-at-14-08-37.png" width="700px" />
+
+<p align="center" >
+   <img src="http://kittenyang.com/content/images/2015/Jun/CodeCogsEqn--2-.gif" width="150px" />
+</p>
+
+
+
+
+Then,put it to`currentPhoto.layer.transform`:
+
+```objc
+        CGFloat Y =MIN(SCROLLDISTANCE,MAX(0,ABS(transition.y)));
+        factorOfAngle = MAX(0,-4/(SCROLLDISTANCE*SCROLLDISTANCE)*Y*(Y-SCROLLDISTANCE));
+        factorOfScale = MAX(0,-1/(SCROLLDISTANCE*SCROLLDISTANCE)*Y*(Y-2*SCROLLDISTANCE));
+        
+        CATransform3D t = CATransform3DIdentity;
+        t.m34  = 1.0/-1000;
+        t = CATransform3DRotate(t,factorOfAngle*(M_PI/5), transition.y>0?-1:1, 0, 0);
+        t = CATransform3DScale(t, 1-factorOfScale*0.2, 1-factorOfScale*0.2, 0);
+        currentPhoto.layer.transform = t;
+
+```
+
 ##Note:
 I didn't add the double-tap to zoom feature,but you can learn how to implement the dismiss animation and the architecture:)
 
