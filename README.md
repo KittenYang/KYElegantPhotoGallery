@@ -43,11 +43,11 @@ The loading indicator component which I forked and customized is [Here](https://
 
 ##[A brief intro of the pan-to-dismiss animation](http://kittenyang.com/function-animtion/):
 
-I use two quadratic functions(二次函数) to generate two factors:** factorOfAngle ** & ** factorOfScale **. 
+I use two quadratic functions(二次函数) to generate two factors:**factorOfAngle** & **factorOfScale**. 
 
-The ** factorOfAngle ** is the factor to make the view rotaton around the X axis,the ** factorOfScale ** of course is the factor to make view scale.And here are the graphs of ** factorOfAngle ** & ** factorOfScale ** blow.
+The **factorOfAngle** is the factor to make the view rotaton around the X axis,the **factorOfScale** of course is the factor to make view scale.And here are the graphs of **factorOfAngle** & **factorOfScale** blow.
 
-###** factorOfAngle **
+###**factorOfAngle**
 
 <img src="http://kittenyang.com/content/images/2015/Jun/Screen-Shot-2015-06-04-at-14-05-39.png" width="700px" />
 
@@ -56,7 +56,7 @@ The ** factorOfAngle ** is the factor to make the view rotaton around the X axis
 </p>
 
 
-###** factorOfScale **
+###**factorOfScale**
 
 <img src="http://kittenyang.com/content/images/2015/Jun/Screen-Shot-2015-06-04-at-14-08-37.png" width="700px" />
 
