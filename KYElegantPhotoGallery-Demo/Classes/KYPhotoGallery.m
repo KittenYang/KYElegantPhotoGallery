@@ -19,7 +19,7 @@
 @interface KYPhotoGallery ()<UIScrollViewDelegate>
 
 @property(nonatomic,strong)UIImageView *fromImageView;
-@property(nonatomic,strong)UIImageView *blurView;
+@property(nonatomic,strong)UIVisualEffectView *blurView;
 @property(nonatomic,strong)PhotoGalleryScrollView *photosGalleryScroll;
 @property(nonatomic,strong)UIImageView *animatedImageView;
 @property(nonatomic,assign)CGRect initialImageViewFrame;
@@ -89,7 +89,7 @@
     
     //initial
     self.fromImageView.hidden = YES;
-    fromVCSnapShot = [self screenshot];
+//    fromVCSnapShot = [self screenshot];
     self.view.backgroundColor = [UIColor clearColor];
     float scaleFactor = self.fromImageView.image.size.width / SCREENWIDTH;
     
@@ -99,7 +99,9 @@
     
     
     //模糊图层
-    self.blurView = [[UIImageView alloc]initWithImage:[fromVCSnapShot applyDarkEffect]];
+    
+    self.blurView = [[UIVisualEffectView alloc]initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+//    self.blurView = [[UIImageView alloc]initWithImage:[fromVCSnapShot applyDarkEffect]];
     self.blurView.frame = self.view.frame;
     self.blurView.alpha = 0.0f;
     [self.view addSubview:self.blurView];
