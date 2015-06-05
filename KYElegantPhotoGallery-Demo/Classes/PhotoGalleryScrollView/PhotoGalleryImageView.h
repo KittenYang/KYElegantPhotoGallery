@@ -16,6 +16,6 @@
 
 @interface PhotoGalleryImageView : UIImageView
 
-@property (nonatomic, weak) id <DetectingImageViewDelegate> tapDelegate;
+@property (nonatomic, assign) id <DetectingImageViewDelegate> tapDelegate;
 
 @end

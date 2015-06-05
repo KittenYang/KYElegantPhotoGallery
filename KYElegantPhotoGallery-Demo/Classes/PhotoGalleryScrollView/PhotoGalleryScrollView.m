@@ -70,7 +70,7 @@
             //放在子Scroll View上的图片视图
             UIImageView *igv = (UIImageView *)imageViewArray[i];
             PhotoGalleryImageView *image = [[PhotoGalleryImageView alloc]initWithImage:igv.image];
-            image.tapDelegate = scroll;
+            image.tapDelegate =  (id<DetectingImageViewDelegate>)scroll;
             image.contentMode = UIViewContentModeScaleAspectFit;
 
             image.center = CGPointMake(scroll.bounds.size.width/2,scroll.bounds.size.height/2);
