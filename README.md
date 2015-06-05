@@ -31,6 +31,24 @@ The loading indicator component which I forked and customized is [Here](https://
 
 ```
 
+##What it can do
+
+###1.支持双击放大、pinch缩放
+
+###2.支持长微博滑动
+
+###3.支持手势滑动dismiss
+
+###4.支持单击dismiss
+
+##TODO
+
+###1.滑动时显示自定义PageControl，并且显示总页数和当前页数
+
+###2.增加长按保存
+
+
+
 ##How to use
 ```objc
     _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view andImageUrls:self.bigImagesUrls andInitialIndex:sender.view.tag];
