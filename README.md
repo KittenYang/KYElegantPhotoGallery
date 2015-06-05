@@ -82,6 +82,5 @@ Then,put it to`currentPhoto.layer.transform`:
 
 ```
 
-##Note:
-I didn't add the double-tap to zoom feature,but you can learn how to implement the dismiss animation and the architecture:)
+
 
