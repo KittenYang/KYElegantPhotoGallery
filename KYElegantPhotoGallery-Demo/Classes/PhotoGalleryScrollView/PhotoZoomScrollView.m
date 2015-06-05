@@ -14,6 +14,10 @@
 
 @property (nonatomic,weak)KYPhotoGallery *photoGallery;
 
+#pragma mark -- Private method
+- (void)layout;
+- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center;
+
 @end
 
 @implementation PhotoZoomScrollView
@@ -23,7 +27,7 @@
     if (self) {
         _photoGallery = photoGallery;
         self.delegate = self;
-        self.maximumZoomScale = 2.0f;
+        self.maximumZoomScale = 4.0f;
     
     }
     
@@ -37,13 +41,39 @@
     
     zoomRect.size.height = [self frame].size.height / scale;
     zoomRect.size.width  = [self frame].size.width  / scale;
-    
     zoomRect.origin.x    = center.x - (zoomRect.size.width  / 2.0);
-    
     zoomRect.origin.y    = center.y - (zoomRect.size.height / 2.0);
     
     return zoomRect;
 }
+
+
+- (void)layout {
+    
+    // Center the image as it becomes smaller than the size of the screen
+    CGSize boundsSize = self.bounds.size;
+    CGRect frameToCenter = self.currentPhoto.frame;
+    
+    // Horizontally
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
+    } else {
+        frameToCenter.origin.x = 0;
+    }
+    
+    // Vertically
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
+    } else {
+        frameToCenter.origin.y = 0;
+    }
+    
+    // Center
+    if (!CGRectEqualToRect(self.currentPhoto.frame, frameToCenter))
+        self.currentPhoto.frame = frameToCenter;
+}
+
+
 
 #pragma DetectingImageViewDelegate
 - (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch{
@@ -69,16 +99,20 @@
         // Zoom in
         CGRect zoomRect = [self zoomRectForScale:self.maximumZoomScale withCenter:touchPoint];
         [self zoomToRect:zoomRect animated:YES];
-        
+    
     }
     
 }
 
 
+#pragma UISrollViewDelegate
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.currentPhoto;
 }
 
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    [self layout];
+}
 
 
 

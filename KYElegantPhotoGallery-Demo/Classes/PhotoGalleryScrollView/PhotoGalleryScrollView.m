@@ -63,7 +63,6 @@
             //用于缩放的子Scroll View
             PhotoZoomScrollView *scroll = [[PhotoZoomScrollView alloc]initWithPhotoGallery:self.photoGallery];
             scroll.center = CGPointMake(self.center.x- PHOTOS_SPACING/2+self.frame.size.width*i, self.center.y);
-            scroll.backgroundColor = [UIColor redColor];
             scroll.bounds = CGRectMake(0, 0, frame.size.width - PHOTOS_SPACING, frame.size.height);
             [self addSubview:scroll];
             
