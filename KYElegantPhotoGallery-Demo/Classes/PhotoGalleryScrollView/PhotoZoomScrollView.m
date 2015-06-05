@@ -15,7 +15,7 @@
 @property (nonatomic,weak)KYPhotoGallery *photoGallery;
 
 #pragma mark -- Private method
-- (void)layout;
+
 - (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center;
 
 @end

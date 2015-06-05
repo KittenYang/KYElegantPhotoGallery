@@ -17,4 +17,6 @@
 
 -(id)initWithPhotoGallery:(KYPhotoGallery *)photoGallery;
 
+- (void)layout;
+
 @end

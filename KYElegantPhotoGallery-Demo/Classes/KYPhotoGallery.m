@@ -219,7 +219,7 @@
     PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photosGalleryScroll currentPhoto];
     UIScrollView *scroll = (UIScrollView *)currentPhoto.superview;
     
-    if (scroll.zoomScale != scroll.minimumZoomScale) {
+    if (scroll.zoomScale != scroll.minimumZoomScale || currentPhoto.bounds.size.height > SCREENHEIGHT) {
         return;
     }
     

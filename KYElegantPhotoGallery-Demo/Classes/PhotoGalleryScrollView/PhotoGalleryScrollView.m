@@ -72,15 +72,18 @@
             PhotoGalleryImageView *image = [[PhotoGalleryImageView alloc]initWithImage:igv.image];
             image.tapDelegate = scroll;
             image.contentMode = UIViewContentModeScaleAspectFit;
+
             image.center = CGPointMake(scroll.bounds.size.width/2,scroll.bounds.size.height/2);
             image.bounds = CGRectMake(0, 0, SCREENWIDTH, igv.image.size.height*SCREENWIDTH/igv.image.size.width);
+            
             image.layer.masksToBounds = YES;
             image.layer.cornerRadius  = 8.0f;
             [self.photos addObject:image];
-            
             scroll.currentPhoto = image;
         
+            
             [scroll addSubview:image];
+            [scroll layout];
         }        
     }
 
