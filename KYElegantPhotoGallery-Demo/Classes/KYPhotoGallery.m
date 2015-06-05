@@ -55,14 +55,18 @@
         
         
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+            
             self.modalPresentationStyle = UIModalPresentationCustom;
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             self.modalPresentationCapturesStatusBarAppearance = YES;
+            
         }else{
+            
             _applicationTopViewController = [self topviewController];
             _previousModalPresentationStyle = _applicationTopViewController.modalPresentationStyle;
             _applicationTopViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            
         }
         
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -99,7 +103,6 @@
     
     
     //模糊图层
-    
     self.blurView = [[UIVisualEffectView alloc]initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
 //    self.blurView = [[UIImageView alloc]initWithImage:[fromVCSnapShot applyDarkEffect]];
     self.blurView.frame = self.view.frame;
@@ -109,8 +112,7 @@
 
     
     //图片滚动视图
-    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray initialPageIndex:self.initialPageIndex];
-    _photosGalleryScroll.photoGallery = self;
+    _photosGalleryScroll = [[PhotoGalleryScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width+PHOTOS_SPACING, self.view.frame.size.height) imageViews:self.imageViewArray initialPageIndex:self.initialPageIndex withPhotoGallery:self];
     [self.view addSubview:_photosGalleryScroll];
     
     indexs = [NSMutableArray array];
@@ -215,13 +217,21 @@
     CGFloat factorOfScale = 0.0f;
     CGPoint transition = [pan translationInView:self.view];
     PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photosGalleryScroll currentPhoto];
+    UIScrollView *scroll = (UIScrollView *)currentPhoto.superview;
+    
+    if (scroll.zoomScale != scroll.minimumZoomScale) {
+        return;
+    }
+    
     
     if (pan.state == UIGestureRecognizerStateBegan) {
         NSLog(@"currentIndex:%ld",self.photosGalleryScroll.currentIndex);
         initialPoint = currentPhoto.center;
         
+        
     }else if(pan.state == UIGestureRecognizerStateChanged){
         
+
         
         currentPhoto.center = CGPointMake(initialPoint.x,initialPoint.y + transition.y);
         self.animatedImageView.center = CGPointMake(self.animatedImageView.center.x, currentPhoto.center.y);
