@@ -19,6 +19,7 @@
 		5F504A191B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A181B1A1DDE005E90B8 /* KYElegantPhotoGallery_DemoTests.m */; };
 		5F504A241B1A1F26005E90B8 /* KYPhotoGallery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */; };
 		5FEFA73B1B2194E500DC3DA0 /* PhotoZoomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FEFA73A1B2194E500DC3DA0 /* PhotoZoomScrollView.m */; };
+		5FEFA7441B21F14E00DC3DA0 /* UCZProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FEFA7431B21F14E00DC3DA0 /* UCZProgressView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,8 @@
 		5F504A231B1A1F26005E90B8 /* KYPhotoGallery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYPhotoGallery.m; path = Classes/KYPhotoGallery.m; sourceTree = SOURCE_ROOT; };
 		5FEFA7391B2194E500DC3DA0 /* PhotoZoomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoZoomScrollView.h; path = Classes/PhotoGalleryScrollView/PhotoZoomScrollView.h; sourceTree = SOURCE_ROOT; };
 		5FEFA73A1B2194E500DC3DA0 /* PhotoZoomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoZoomScrollView.m; path = Classes/PhotoGalleryScrollView/PhotoZoomScrollView.m; sourceTree = SOURCE_ROOT; };
+		5FEFA7421B21F14E00DC3DA0 /* UCZProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UCZProgressView.h; path = Classes/Helpers/UCZProgressView.h; sourceTree = SOURCE_ROOT; };
+		5FEFA7431B21F14E00DC3DA0 /* UCZProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UCZProgressView.m; path = Classes/Helpers/UCZProgressView.m; sourceTree = SOURCE_ROOT; };
 		9A3448231358A2E399A6B3DF /* Pods-KYElegantPhotoGallery-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYElegantPhotoGallery-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-KYElegantPhotoGallery-Demo/Pods-KYElegantPhotoGallery-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		DBA26B347BFDA47EB81C911D /* Pods-KYElegantPhotoGallery-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KYElegantPhotoGallery-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KYElegantPhotoGallery-Demo/Pods-KYElegantPhotoGallery-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,6 +92,8 @@
 		5F0300071B1ACD09001E78D2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				5FEFA7421B21F14E00DC3DA0 /* UCZProgressView.h */,
+				5FEFA7431B21F14E00DC3DA0 /* UCZProgressView.m */,
 				5F0300161B1AF3DB001E78D2 /* Macro.h */,
 			);
 			name = Helpers;
@@ -331,6 +336,7 @@
 				5F504A241B1A1F26005E90B8 /* KYPhotoGallery.m in Sources */,
 				5F504A021B1A1DDE005E90B8 /* AppDelegate.m in Sources */,
 				5F5049FF1B1A1DDE005E90B8 /* main.m in Sources */,
+				5FEFA7441B21F14E00DC3DA0 /* UCZProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
