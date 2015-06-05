@@ -15,8 +15,8 @@
 
 @property (nonatomic,strong)PhotoGalleryImageView *currentPhoto;
 
--(id)initWithPhotoGallery:(KYPhotoGallery *)photoGallery;
 
+-(id)initWithPhotoGallery:(KYPhotoGallery *)photoGallery;
 - (void)layout;
 
 @end

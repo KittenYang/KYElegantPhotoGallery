@@ -15,7 +15,6 @@
 @property (nonatomic,weak)KYPhotoGallery *photoGallery;
 
 #pragma mark -- Private method
-
 - (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center;
 
 @end
@@ -48,6 +47,7 @@
 }
 
 
+#pragma mark -- Public method
 - (void)layout {
     
     // Center the image as it becomes smaller than the size of the screen

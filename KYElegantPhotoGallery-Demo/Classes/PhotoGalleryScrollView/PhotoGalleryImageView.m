@@ -8,6 +8,13 @@
 
 #import "PhotoGalleryImageView.h"
 
+@interface PhotoGalleryImageView()
+
+- (void)handleSingleTap:(UITouch *)touch;
+- (void)handleDoubleTap:(UITouch *)touch;
+
+@end
+
 @implementation PhotoGalleryImageView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -31,6 +38,7 @@
     return self;
 }
 
+#pragma mark -- UIResponder method
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     NSUInteger tapCount = touch.tapCount;
@@ -52,17 +60,17 @@
 
 
 
-
+#pragma mark -- Private method
 - (void)handleSingleTap:(UITouch *)touch {
     if ([self.tapDelegate respondsToSelector:@selector(imageView:singleTapDetected:)])
         [self.tapDelegate imageView:self singleTapDetected:touch];
-    
     
 }
 
 - (void)handleDoubleTap:(UITouch *)touch {
     if ([self.tapDelegate respondsToSelector:@selector(imageView:doubleTapDetected:)])
         [self.tapDelegate imageView:self doubleTapDetected:touch];
+    
 }
 
 

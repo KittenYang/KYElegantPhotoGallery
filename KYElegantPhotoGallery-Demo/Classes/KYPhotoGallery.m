@@ -9,7 +9,6 @@
 
 
 #import "KYPhotoGallery.h"
-#import "UIImage+ImageEffects.h"
 #import "Macro.h"
 #import "PhotoGalleryScrollView.h"
 
@@ -29,6 +28,11 @@
 
 @property(nonatomic,copy)void (^finishAsynDownloadBlock)(void);
 @property(nonatomic,strong)NSMutableArray *imagesUrls;
+
+#pragma mark -- Private method
+-(void)loadingImage:(UIImageView *)needLoadingImageView withURL:(NSString *)url shouldCompleted:(BOOL)flag;
+-(void)panGestureRecognized:(UIPanGestureRecognizer *)pan;
+
 @end
 
 @implementation KYPhotoGallery{
@@ -41,6 +45,8 @@
     
     NSMutableArray *indexs;
 }
+
+#pragma mark -- Initial method
 
 -(id)initWithTappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex {
     
@@ -75,11 +81,8 @@
     return self;
 }
 
--(void)finishAsynDownload:(void(^)(void))finishAsynDownloadBlock{
-    self.finishAsynDownloadBlock = finishAsynDownloadBlock;
-    
-}
 
+#pragma mark -- Life circle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -104,7 +107,6 @@
     
     //模糊图层
     self.blurView = [[UIVisualEffectView alloc]initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-//    self.blurView = [[UIImageView alloc]initWithImage:[fromVCSnapShot applyDarkEffect]];
     self.blurView.frame = self.view.frame;
     self.blurView.alpha = 0.0f;
     [self.view addSubview:self.blurView];
@@ -147,9 +149,7 @@
         self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
         self.fromImageView.hidden = YES;
         self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
-
-        
-//        NSLog(@"currentIndex:%ld",currentIndex);
+        NSLog(@"currentIndex:%ld",currentIndex);
     }];
     
     
@@ -167,7 +167,7 @@
     
 }
 
-#pragma loadingImage
+#pragma Private method
 -(void)loadingImage:(UIImageView *)needLoadingImageView withURL:(NSString *)url shouldCompleted:(BOOL)flag{
     
     UCZProgressView *progressView = [[UCZProgressView alloc]initWithFrame:CGRectMake(0, 0, needLoadingImageView.bounds.size.width, needLoadingImageView.bounds.size.height)];
@@ -210,6 +210,7 @@
     }];
 }
 
+
 -(void)panGestureRecognized:(UIPanGestureRecognizer *)pan{
     
     static CGPoint initialPoint;
@@ -223,7 +224,7 @@
         return;
     }
     
-    
+
     if (pan.state == UIGestureRecognizerStateBegan) {
         NSLog(@"currentIndex:%ld",self.photosGalleryScroll.currentIndex);
         initialPoint = currentPhoto.center;
@@ -276,6 +277,7 @@
 }
 
 
+#pragma mark -- dealloc
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -292,8 +294,14 @@
 }
 
 
+#pragma mark -- Public method
 
-#pragma dismiss
+-(void)finishAsynDownload:(void(^)(void))finishAsynDownloadBlock{
+    self.finishAsynDownloadBlock = finishAsynDownloadBlock;
+    
+}
+
+
 -(void)dismissPhotoGalleryAnimated:(BOOL)animated{
     
     @autoreleasepool {
@@ -333,7 +341,7 @@
 
 
 
-#pragma Helper
+#pragma Helper method
 - (UIViewController *)topviewController
 {
     UIViewController *topviewController = [UIApplication sharedApplication].keyWindow.rootViewController;

@@ -52,7 +52,7 @@
     
 }
 
-
+#pragma mark -- init helper method
 -(void)setUp:(NSMutableArray *)imageViewArray  frame:(CGRect)frame {
     
     self.photos = [NSMutableArray array];
@@ -93,11 +93,10 @@
 
 
 
-
+#pragma mark -- Public method
 -(NSInteger)currentIndex{
     return currentIndex;
 }
-
 
 -(PhotoGalleryImageView *)currentPhoto{
     PhotoGalleryImageView *currentPhoto = (PhotoGalleryImageView *)[self.photos objectAtIndex:currentIndex-1];
@@ -106,7 +105,6 @@
 }
 
 
-#pragma method
 -(void)DidScrollBlock:(void(^)(NSInteger currentIndex))didEndScrollBlock{
 
     self.DidScrollBlock = didEndScrollBlock;
@@ -118,7 +116,7 @@
 }
 
 
-#pragma UIScrollViewDelegate
+#pragma UIScrollViewDelegate method
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
     if (isFirst) {
