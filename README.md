@@ -1,11 +1,42 @@
-# KYElegantPhotoGallery
+<p align="left" >
+  <img src="logo.png" alt="KYElegantPhotoGallery" title="KYElegantPhotoGallery">
+</p>
+
+![CocoaPods Version](https://img.shields.io/badge/pod-v1.0.1-brightgreen.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Platform](https://img.shields.io/badge/platform-iOS-red.svg)
+
+
 An elegant photo gallery. It will zoom from a thumb image and you can pan to dismiss it with cool animation.
 
 The loading indicator component which I forked and customized is [Here](https://github.com/KittenYang/UCZProgressView)
 
 <img src="http://ww4.sinaimg.cn/bmiddle/aa1f155cgw1esraezg38cg205s0ache0.gif" width="300px" />
 
-`KYPhotoGallery.h`：
+##Installation:
+
+`pod 'KYElegantPhotoGallery', '~> 1.0.1'`
+
+
+
+##What it can do
+
+###1.支持双击放大、pinch缩放
+
+###2.支持长微博滑动
+
+###3.支持手势滑动dismiss
+
+###4.支持单击dismiss
+
+##TODO
+
+###1.滑动时显示自定义PageControl，并且显示总页数和当前页数
+
+###2.增加长按保存
+
+
+##Propertys & Init method:
 
 ```objc
 /*
@@ -30,24 +61,6 @@ The loading indicator component which I forked and customized is [Here](https://
 -(void)finishAsynDownload:(void(^)(void))finishAsynDownloadBlock;
 
 ```
-
-##What it can do
-
-###1.支持双击放大、pinch缩放
-
-###2.支持长微博滑动
-
-###3.支持手势滑动dismiss
-
-###4.支持单击dismiss
-
-##TODO
-
-###1.滑动时显示自定义PageControl，并且显示总页数和当前页数
-
-###2.增加长按保存
-
-
 
 ##How to use
 ```objc
