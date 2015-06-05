@@ -67,7 +67,7 @@
             [self addSubview:scroll];
             
             
-            //放在子Scroll View上图片视图
+            //放在子Scroll View上的图片视图
             UIImageView *igv = (UIImageView *)imageViewArray[i];
             PhotoGalleryImageView *image = [[PhotoGalleryImageView alloc]initWithImage:igv.image];
             image.tapDelegate = scroll;
@@ -135,6 +135,10 @@
         currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width + 1;
         currentIndex = MAX(1, currentIndex);
         self.DidEndDecelerateBlock(currentIndex-1);
+    
+        for (UIScrollView *scrollView in self.subviews) {
+            [scrollView setZoomScale:self.minimumZoomScale animated:YES];
+        }
     }
 }
 
