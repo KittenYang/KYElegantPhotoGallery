@@ -3,7 +3,6 @@
 
 target 'KYElegantPhotoGallery-Demo' do
 
-pod 'UCZProgressView'
 pod 'SDWebImage', '~> 3.7.2'
 
 end

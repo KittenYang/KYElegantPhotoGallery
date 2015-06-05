@@ -18,9 +18,3 @@
 #define COCOAPODS_VERSION_MINOR_SDWebImage_Core 7
 #define COCOAPODS_VERSION_PATCH_SDWebImage_Core 2
 
-// UCZProgressView
-#define COCOAPODS_POD_AVAILABLE_UCZProgressView
-#define COCOAPODS_VERSION_MAJOR_UCZProgressView 1
-#define COCOAPODS_VERSION_MINOR_UCZProgressView 0
-#define COCOAPODS_VERSION_PATCH_UCZProgressView 1
-
