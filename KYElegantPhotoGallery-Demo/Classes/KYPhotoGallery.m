@@ -149,7 +149,7 @@
         self.fromImageView = (UIImageView *)self.imageViewArray[currentIndex];
         self.fromImageView.hidden = YES;
         self.initialImageViewFrame = [self.fromImageView.superview convertRect:self.fromImageView.frame toView:nil];
-        NSLog(@"currentIndex:%ld",currentIndex);
+        NSLog(@"currentIndex:%ld",(long)currentIndex);
     }];
     
     
@@ -226,7 +226,7 @@
     
 
     if (pan.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"currentIndex:%ld",self.photosGalleryScroll.currentIndex);
+        NSLog(@"currentIndex:%ld",(long)self.photosGalleryScroll.currentIndex);
         initialPoint = currentPhoto.center;
         
         

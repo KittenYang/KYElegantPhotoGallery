@@ -12,7 +12,7 @@
 
 @interface PhotoZoomScrollView() <DetectingImageViewDelegate,UIScrollViewDelegate>
 
-@property (nonatomic,weak)KYPhotoGallery *photoGallery;
+@property (nonatomic,strong)KYPhotoGallery *photoGallery;
 
 #pragma mark -- Private method
 - (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center;

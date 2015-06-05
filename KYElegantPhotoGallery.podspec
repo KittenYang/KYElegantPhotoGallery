@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "KYElegantPhotoGallery"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "图片浏览控件，支持手势dismiss并伴有优雅的动画。"
 
   s.description  = <<-DESC
@@ -60,7 +60,7 @@ Pod::Spec.new do |s|
   #
 
   s.platform     = :ios
-  #s.platform     = :ios, "5.0"
+  s.platform     = :ios, "7.0"
 
   #  When using multiple platforms
   # s.ios.deployment_target = "5.0"
