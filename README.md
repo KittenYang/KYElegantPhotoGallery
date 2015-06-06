@@ -114,4 +114,7 @@ Then,put it to`currentPhoto.layer.transform`:
 ```
 
 
+##License
+This project is under MIT License. See LICENSE file for more information.
+
 
