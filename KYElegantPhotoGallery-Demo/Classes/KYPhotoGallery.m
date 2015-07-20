@@ -35,6 +35,7 @@
 
 @end
 
+
 @implementation KYPhotoGallery{
     
     UIImage *fromVCSnapShot;
@@ -44,41 +45,55 @@
     int _previousModalPresentationStyle;
     
     NSMutableArray *indexs;
+    
+    NSInteger  idflag;
+    
 }
 
 #pragma mark -- Initial method
 
--(id)initWithTappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex {
++ (KYPhotoGallery *)sharedKYPhotoGallery {
+    static dispatch_once_t once;
+    static id instance;
+    dispatch_once(&once, ^{
+        instance = [self new];
+    });
+    return instance;
+}
+
+
+
+
+
+-(void)tappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex {
     
-    self = [super init];
-    if (self) {
+
+    self.imagesUrls = imagesUrls;
+    self.fromImageView = tappedImageView;
+    self.initialPageIndex = currentIndex;
+    
+    [self loadingImage:tappedImageView withURL:_imagesUrls[currentIndex-1] shouldCompleted:YES];
+    
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         
-        self.imagesUrls = imagesUrls;
-        self.fromImageView = tappedImageView;
-        self.initialPageIndex = currentIndex;
+        self.modalPresentationStyle = UIModalPresentationCustom;
+        self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        self.modalPresentationCapturesStatusBarAppearance = YES;
         
-        [self loadingImage:tappedImageView withURL:_imagesUrls[currentIndex-1] shouldCompleted:YES];
+    }else{
         
-        
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-            
-            self.modalPresentationStyle = UIModalPresentationCustom;
-            self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            self.modalPresentationCapturesStatusBarAppearance = YES;
-            
-        }else{
-            
-            _applicationTopViewController = [self topviewController];
-            _previousModalPresentationStyle = _applicationTopViewController.modalPresentationStyle;
-            _applicationTopViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-            self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            
-        }
-        
+        _applicationTopViewController = [self topviewController];
+        _previousModalPresentationStyle = _applicationTopViewController.modalPresentationStyle;
+        _applicationTopViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         
     }
-    return self;
+    
+    self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    
+//    locked = YES;
+    
 }
 
 
@@ -119,6 +134,7 @@
     
     indexs = [NSMutableArray array];
     [indexs addObject:[NSNumber numberWithInteger:self.initialPageIndex-1]];
+    
     
     //动画视图
     self.animatedImageView = [[UIImageView alloc]initWithImage:self.fromImageView.image];
@@ -170,6 +186,8 @@
 #pragma Private method
 -(void)loadingImage:(UIImageView *)needLoadingImageView withURL:(NSString *)url shouldCompleted:(BOOL)flag{
     
+    needLoadingImageView.tag = idflag = arc4random();
+    
     UCZProgressView *progressView = [[UCZProgressView alloc]initWithFrame:CGRectMake(0, 0, needLoadingImageView.bounds.size.width, needLoadingImageView.bounds.size.height)];
     BOOL isInCache = [[SDImageCache sharedImageCache]diskImageExistsWithKey:url];
     
@@ -197,7 +215,9 @@
         [progressView progressAnimiationDidStop:^{
             if (flag && image) {
                 
+                
                 self.finishAsynDownloadBlock();
+                
                 
             }else if (!flag && image){
                 

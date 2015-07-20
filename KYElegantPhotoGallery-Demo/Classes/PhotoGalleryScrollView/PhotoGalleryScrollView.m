@@ -13,23 +13,27 @@
 #import "KYPhotoGallery.h"
 
 
-@interface PhotoGalleryScrollView()<UIScrollViewDelegate>
+@interface PhotoGalleryScrollView()<UIScrollViewDelegate,UITableViewDataSource>
 
-@property(nonatomic,copy)void (^DidScrollBlock)(NSInteger currentIndex);
-@property(nonatomic,copy)void (^DidEndDecelerateBlock)(NSInteger currentIndex);
+@property (nonatomic,copy)void (^DidScrollBlock)(NSInteger currentIndex);
+@property (nonatomic,copy)void (^DidEndDecelerateBlock)(NSInteger currentIndex);
 @property (nonatomic,strong)KYPhotoGallery *photoGallery;
 
 @end
 
+
 @implementation PhotoGalleryScrollView{
+    
     NSInteger currentIndex;
     BOOL isFirst;
+    
 }
 
 
 -(id)initWithFrame:(CGRect)frame imageViews:(NSMutableArray *)imageViewArray initialPageIndex:(NSInteger)initialPageIndex withPhotoGallery:(KYPhotoGallery *)photoGallery{
     self =  [super initWithFrame:frame];
     if (self) {
+        
         currentIndex = initialPageIndex;
         isFirst = YES;
         self.photoGallery = photoGallery;
@@ -41,6 +45,8 @@
         self.backgroundColor = [UIColor clearColor];
         [self setUp:imageViewArray frame:frame];
         [self setContentOffset:CGPointMake((initialPageIndex-1)*frame.size.width, 0)];
+        
+        
     }
     
     return self;

@@ -11,6 +11,8 @@
 @interface KYPhotoGallery : UIViewController
 
 
++ (KYPhotoGallery *)sharedKYPhotoGallery;
+
 /*
  *
    @parm:  tappedImageView 当前点击的图片视图
@@ -18,7 +20,7 @@
    @parm:  currentIndex 当前图片的序号，第一张图请传入1，第二张为2，以此类推...
 *
 */
--(id)initWithTappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex;
+-(void)tappedImageView:(UIImageView *)tappedImageView andImageUrls:(NSMutableArray *)imagesUrls andInitialIndex:(NSInteger )currentIndex;
 
 
 /*

@@ -16,7 +16,7 @@
 
 @interface ViewController ()
 
-@property(nonatomic,strong)KYPhotoGallery *photoGallery;
+//@property(nonatomic,strong)KYPhotoGallery *photoGallery;
 @property(nonatomic,strong)NSMutableArray *bigImagesUrls;
 @property(nonatomic,strong)NSMutableArray *thumbImagesUrls;
 @property(nonatomic,strong)NSMutableArray *imageViewArray;  //保存所有UIImageView
@@ -81,10 +81,16 @@
 #pragma mark -- Tapped
 - (void)imgTaped:(UITapGestureRecognizer *)sender{
     
-    _photoGallery = [[KYPhotoGallery alloc]initWithTappedImageView:(UIImageView *)sender.view andImageUrls:self.bigImagesUrls andInitialIndex:sender.view.tag];
-    _photoGallery.imageViewArray = self.imageViewArray;
-    [_photoGallery finishAsynDownload:^{
-        [self presentViewController:_photoGallery animated:NO completion:nil];
+
+    KYPhotoGallery *photoGallery = [KYPhotoGallery sharedKYPhotoGallery];
+    
+    [photoGallery tappedImageView:(UIImageView *)sender.view andImageUrls:self.bigImagesUrls andInitialIndex:sender.view.tag];
+    
+    photoGallery.imageViewArray = self.imageViewArray;
+    [photoGallery finishAsynDownload:^{
+        
+        [self presentViewController:photoGallery animated:NO completion:nil];
+
     }];
     
 }
