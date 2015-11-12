@@ -7,6 +7,8 @@
 ![Platform](https://img.shields.io/badge/platform-iOS-red.svg)
 
 
+**This repo has closed,just for testing the function of curve in animation**
+
 An elegant photo gallery. It will zoom from a thumb image and you can pan to dismiss it with cool animation.
 
 The loading indicator component which I forked and customized is [Here](https://github.com/KittenYang/UCZProgressView)
